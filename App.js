@@ -32,6 +32,7 @@ export default function App() {
                             drivetrain: car.drivetrain,
                             image: car.image,
                             credit: car.credit,
+                            isLimitedStock: car.isLimitedStock,
                         }));
                         setCars(dbCars);
                     })
