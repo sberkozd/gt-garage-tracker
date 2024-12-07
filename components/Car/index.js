@@ -1,13 +1,17 @@
 // React imports
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
+import { useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 // Third-party imports
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 // In-project imports
 import styles from "./styles";
+import { CarContext } from "../../context/CarContext";
 
 export default function Car({
+    id,
     brand,
     model,
     year,
@@ -17,8 +21,17 @@ export default function Car({
     credit,
     isLimitedStock,
 }) {
+    const { cars, currentCar, setCurrentCar } = useContext(CarContext);
+    const navigation = useNavigation();
+
+    const handleCarPress = () => {
+        const pressedCar = cars.find((car) => car.id === id);
+        setCurrentCar(pressedCar);
+        navigation.navigate("CarDetail");
+    };
+
     return (
-        <View style={styles.card}>
+        <Pressable style={styles.card} onPress={handleCarPress}>
             <Image source={{ uri: image }} style={styles.image} />
             <View style={styles.details}>
                 <Text style={styles.title}>{`${brand} ${model} '${year}`}</Text>
@@ -39,6 +52,6 @@ export default function Car({
                     <Text style={styles.credit}>{credit}</Text>
                 </View>
             </View>
-        </View>
+        </Pressable>
     );
 }
