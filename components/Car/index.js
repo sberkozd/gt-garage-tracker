@@ -1,6 +1,11 @@
-import styles from "./styles";
-import Icon from "react-native-vector-icons/MaterialIcons";
+// React imports
 import { View, Text, Image } from "react-native";
+
+// Third-party imports
+import Icon from "react-native-vector-icons/MaterialIcons";
+
+// In-project imports
+import styles from "./styles";
 
 export default function Car({
     brand,

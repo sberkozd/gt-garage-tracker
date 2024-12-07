@@ -1,9 +1,13 @@
+// React imports
 import React, { useContext } from "react";
 import { FlatList } from "react-native";
-import { CarContext } from "../context/CarContext";
-import Car from "../components/Car";
 
-const CarsScreen = () => {
+// In-project imports
+import styles from "./styles";
+import { CarContext } from "../../context/CarContext";
+import Car from "../../components/Car";
+
+export default function CarsScreen() {
     const { cars } = useContext(CarContext);
 
     const renderItem = ({ item }) => (
@@ -27,6 +31,4 @@ const CarsScreen = () => {
             keyExtractor={(item) => item.id}
         />
     );
-};
-
-export default CarsScreen;
+}

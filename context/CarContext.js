@@ -1,14 +1,14 @@
 import { createContext } from "react";
 
 /*
-Creating the CarsContext and its provider
+Creating the CarsContext
 */
 
 export const CarContext = createContext({
-  cars: [],
-  setCars: () => {},
-  currentCar: {},
-  setCurrentCar: () => {},
-  garageCars: false,
-  setGarageCars: () => {},
+    cars: [],
+    setCars: () => {},
+    currentCar: {},
+    setCurrentCar: () => {},
+    garageCars: false,
+    setGarageCars: () => {},
 });

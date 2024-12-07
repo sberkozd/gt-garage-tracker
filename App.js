@@ -1,12 +1,16 @@
-import React from "react";
+// React imports
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+// Third-party imports
 import Ionicons from "react-native-vector-icons/Ionicons";
-import CarsStackNavigator from "./screens/CarsStackNavigator";
-import GarageScreen from "./screens/GarageScreen";
+
+// In-project imports
 import { CarContext } from "./context/CarContext";
-import { useEffect, useState } from "react";
 import * as database from "./database";
+import CarsStackNavigator from "./components/CarsStackNavigator";
+import GarageScreen from "./screens/GarageScreen";
 
 const Tab = createBottomTabNavigator();
 
