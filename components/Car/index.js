@@ -21,7 +21,7 @@ export default function Car({
     credit,
     isLimitedStock,
 }) {
-    const { cars, currentCar, setCurrentCar } = useContext(CarContext);
+    const { cars, setCurrentCar } = useContext(CarContext);
     const navigation = useNavigation();
 
     const handleCarPress = () => {
