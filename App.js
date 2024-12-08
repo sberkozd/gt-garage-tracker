@@ -72,24 +72,24 @@ export default function App() {
                         children={() => <CarsStackNavigator />}
                         options={{
                             headerShown: false,
-                            tabBarIcon: ({ color, size }) => (
+                            tabBarIcon: ({ color }) => (
                                 <MaterialCommunityIcons
                                     name="car"
                                     color={color}
-                                    size={size}
+                                    size={40}
                                 />
                             ),
                         }}
                     />
                     <Tab.Screen
-                        name="GarageSummary"
+                        name="Garage Summary"
                         children={() => <GarageSummaryScreen />}
                         options={{
-                            tabBarIcon: ({ color, size }) => (
+                            tabBarIcon: ({ color }) => (
                                 <MaterialCommunityIcons
-                                    name="home"
+                                    name="chart-pie"
                                     color={color}
-                                    size={size}
+                                    size={40}
                                 />
                             ),
                         }}
@@ -98,11 +98,11 @@ export default function App() {
                         name="Garage"
                         children={() => <GarageScreen />}
                         options={{
-                            tabBarIcon: ({ color, size }) => (
+                            tabBarIcon: ({ color }) => (
                                 <MaterialCommunityIcons
                                     name="garage"
                                     color={color}
-                                    size={size}
+                                    size={40}
                                 />
                             ),
                         }}

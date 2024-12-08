@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
         height: 250,
     },
     leftText: {
-        fontSize: "18",
+        fontSize: 18,
         fontWeight: "600",
     },
     rightText: {
-        fontSize: "18",
+        fontSize: 18,
     },
     creditContainer: {
         borderRadius: 8,
