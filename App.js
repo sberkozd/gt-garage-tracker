@@ -4,13 +4,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Third-party imports
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // In-project imports
 import { CarContext } from "./context/CarContext";
 import * as database from "./database";
 import CarsStackNavigator from "./components/CarsStackNavigator";
 import GarageScreen from "./screens/GarageScreen";
+import GarageSummaryScreen from "./screens/GarageSummaryScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -72,8 +73,21 @@ export default function App() {
                         options={{
                             headerShown: false,
                             tabBarIcon: ({ color, size }) => (
-                                <Ionicons
+                                <MaterialCommunityIcons
                                     name="car"
+                                    color={color}
+                                    size={size}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="GarageSummary"
+                        children={() => <GarageSummaryScreen />}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons
+                                    name="home"
                                     color={color}
                                     size={size}
                                 />
@@ -85,8 +99,8 @@ export default function App() {
                         children={() => <GarageScreen />}
                         options={{
                             tabBarIcon: ({ color, size }) => (
-                                <Ionicons
-                                    name="home"
+                                <MaterialCommunityIcons
+                                    name="garage"
                                     color={color}
                                     size={size}
                                 />
