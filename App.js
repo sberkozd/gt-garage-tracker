@@ -76,7 +76,7 @@ export default function App() {
                                 <MaterialCommunityIcons
                                     name="car"
                                     color={color}
-                                    size={40}
+                                    size={30}
                                 />
                             ),
                         }}
@@ -89,7 +89,7 @@ export default function App() {
                                 <MaterialCommunityIcons
                                     name="chart-pie"
                                     color={color}
-                                    size={40}
+                                    size={30}
                                 />
                             ),
                         }}
@@ -102,7 +102,7 @@ export default function App() {
                                 <MaterialCommunityIcons
                                     name="garage"
                                     color={color}
-                                    size={40}
+                                    size={30}
                                 />
                             ),
                         }}
