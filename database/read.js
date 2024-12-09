@@ -8,7 +8,7 @@ import { db } from "./config";
 /*
 Retrieving all Cars from the db
 */
-export async function getCarsFromDB() {
+export async function getAllCarsFromDB() {
     const data = [];
     const querySnapshot = await getDocs(collection(db, "cars"));
 
