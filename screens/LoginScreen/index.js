@@ -1,6 +1,13 @@
 // React imports
 import { useContext, useEffect, useState } from "react";
-import { Modal, Pressable, Text, TextInput, View } from "react-native";
+import {
+    ImageBackground,
+    Modal,
+    Pressable,
+    Text,
+    TextInput,
+    View,
+} from "react-native";
 
 // Third party imports
 import Toast from "react-native-toast-message";
@@ -44,7 +51,6 @@ export default function LoginScreen({ setCredentials }) {
 
     const [showModal, setShowModal] = useState(false);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
-    
 
     const { setIsAuthenticated, setAuthId } = useContext(AuthContext);
 
@@ -117,18 +123,18 @@ export default function LoginScreen({ setCredentials }) {
         }
     };
 
-        /* Sanity check for nickname */
-        const handleNicknameChange = (value) => {
-            setNickname(value);
-    
-            if (value.length === 0) {
-                setNicknameIsValid(false);
-                setNicknameErrTxt("Please enter a nickname");
-            } else {
-                setNicknameIsValid(true);
-                setNicknameErrTxt("");
-            }
-        };
+    /* Sanity check for nickname */
+    const handleNicknameChange = (value) => {
+        setNickname(value);
+
+        if (value.length === 0) {
+            setNicknameIsValid(false);
+            setNicknameErrTxt("Please enter a nickname");
+        } else {
+            setNicknameIsValid(true);
+            setNicknameErrTxt("");
+        }
+    };
 
     /*
     Attempts to sign user in to db
@@ -242,55 +248,73 @@ export default function LoginScreen({ setCredentials }) {
     return (
         <>
             <View style={styles.container} setCredentials={setCredentials}>
-                <TextInput
-                    style={styles.textInputContainer}
-                    placeholder="Email Address"
-                    onChangeText={handleEmailChange}
-                    keyboardType={"email"}
-                    autoCapitalize="none"
-                />
-
-                <InputMsgBox text={emailErrTxt}></InputMsgBox>
-
-                <TextInput
-                    style={styles.textInputContainer}
-                    placeholder="Password"
-                    onChangeText={handlePwdChange}
-                    secureTextEntry={true}
-                    value={pwd}
-                />
-
-                <InputMsgBox text={pwdErrTxt}></InputMsgBox>
-
-                <Pressable
-                    style={[
-                        styles.modalButton,
-                        styles.loginButton,
-                        loginBtnDisabled && styles.disabledButton,
-                    ]}
-                    onPress={handleLoginPress}
-                    disabled={loginBtnDisabled}
+                <ImageBackground
+                    source={{ uri: "https://wallpapers.com/images/hd/garage-background-lsvpd9p5e1h34yi6.jpg" }}
+                    resizeMode="cover"
+                    style={styles.image}
                 >
-                    <Text style={styles.modalButtonText}>Login</Text>
-                </Pressable>
+                    <TextInput
+                        style={styles.textInputContainer}
+                        placeholder="Email Address"
+                        onChangeText={handleEmailChange}
+                        keyboardType={"email"}
+                        autoCapitalize="none"
+                    />
 
-                <Pressable
-                    style={styles.modalButton}
-                    onPress={handleForgotPasswordPress}
+                    <InputMsgBox text={emailErrTxt}></InputMsgBox>
+
+                    <TextInput
+                        style={styles.textInputContainer}
+                        placeholder="Password"
+                        onChangeText={handlePwdChange}
+                        secureTextEntry={true}
+                        value={pwd}
+                    />
+
+                    <InputMsgBox text={pwdErrTxt}></InputMsgBox>
+
+                    <ImageBackground
+                    source={{ uri: "https://media.istockphoto.com/id/1369079055/vector/vector-carbon-kevlar-fiber-pattern-texture-background.jpg?s=612x612&w=0&k=20&c=y5mEysSCmAgpRhNmQ51Rquyt5i3cKz8I1AEADEvr4Mo=" }}
+                    resizeMode="cover"
+                    style={styles.buttonImage}
                 >
-                    <Text style={styles.modalButtonText}>Forgot Password?</Text>
-                </Pressable>
+                    <Pressable
+                        style={[
+                            styles.modalButton,
+                            styles.loginButton,
+                            loginBtnDisabled && styles.disabledButton,
+                        ]}
+                        onPress={handleLoginPress}
+                        disabled={loginBtnDisabled}
+                    >
+                        <Text style={styles.modalButtonText}>Enter Garage</Text>
+                    </Pressable>
 
-                <Pressable
-                    style={[styles.modalButton, styles.signupButton]}
-                    onPress={handleSignUpPress}
-                >
-                    <Text style={styles.modalButtonText}>Sign up</Text>
-                </Pressable>
+                    </ImageBackground>
 
-                <View style={styles.footer}>
-                    <Text>Aggrey Nhiwatiwa + Berk Ozdemir © Copyright 2024</Text>
-                </View>
+                    <Pressable
+                        style={styles.modalButton}
+                        onPress={handleForgotPasswordPress}
+                    >
+                        <Text style={styles.modalButtonText}>
+                            Forgot Password?
+                        </Text>
+                    </Pressable>
+
+                    <Pressable
+                        style={[styles.modalButton, styles.signupButton]}
+                        onPress={handleSignUpPress}
+                    >
+                        <Text style={styles.modalButtonText}>Sign up</Text>
+                    </Pressable>
+
+                    <View style={styles.footer}>
+                        <Text style={styles.footerText}>
+                            Aggrey Nhiwatiwa + Berk Ozdemir © Copyright 2024
+                        </Text>
+                    </View>
+                
+                
 
                 <Modal animationType="slide" visible={showModal}>
                     <View style={styles.modalView}>
@@ -383,6 +407,7 @@ export default function LoginScreen({ setCredentials }) {
                     </View>
                     <Toast />
                 </Modal>
+                </ImageBackground>
             </View>
         </>
     );

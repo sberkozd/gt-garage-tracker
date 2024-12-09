@@ -6,7 +6,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "rgba(255, 231, 51, 0.5)",
+        //backgroundColor: "rgba(255, 231, 51, 0.5)",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
         width: 280,
         borderRadius: 5,
         paddingLeft: 10,
-        borderColor: "#000000",
-        borderWidth: 1,
+        //borderColor: "#FFAA33",
+        borderWidth: 2,
     },
     footer: {
         position: "absolute",
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     modalButton: {
-        backgroundColor: "#1E3F5A",
+        //backgroundColor: "#1E3F5A",
+        backgroundColor: "#595959",
         margin: 10,
         width: 200,
         height: 40,
@@ -48,18 +49,19 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     disabledButton: {
-        backgroundColor: "#000000",
+        //backgroundColor: "#000000",
         opacity: 0.4,
     },
     loginButton: {
-        backgroundColor: "green",
+        backgroundColor: "#FFAA33",
     },
     closeButton: {
         backgroundColor: "#B5271D",
     },
     signupButton: {
-        marginTop: 50,
-        backgroundColor: "#000000",
+        backgroundColor: "#8B0000",
+        position: "absolute",
+        bottom: 40,
     },
     deleteButton: {
         backgroundColor: "red",
@@ -67,6 +69,24 @@ const styles = StyleSheet.create({
     modalButtonText: {
         fontSize: 20,
         fontWeight: "600",
+        color: "#FFFFFF",
+    },
+
+    image: {
+        flex: 1,
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: 0.8,
+    },
+    buttonImage: {
+        borderRadius: 4,
+    },
+    footerText: {
         color: "#FFFFFF",
     },
 });
