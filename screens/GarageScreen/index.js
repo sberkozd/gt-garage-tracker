@@ -8,9 +8,7 @@ import { CarContext } from "../../context/CarContext";
 import Car from "../../components/Car";
 
 export default function GarageScreen() {
-    const { cars } = useContext(CarContext);//TODO: replace with garage cars
-
-    //TODO: Function to select a garage from the users list of garages
+    const { garageCars } = useContext(CarContext);
 
     const renderItem = ({ item }) => (
         <Car
@@ -28,7 +26,7 @@ export default function GarageScreen() {
 
     return (
         <FlatList
-            data={cars}
+            data={garageCars}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
         />

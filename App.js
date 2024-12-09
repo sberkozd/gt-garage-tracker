@@ -31,37 +31,37 @@ export default function App() {
 
     /* Effect to set data from the db to local state */
     useEffect(() => {
-        async function loadAllCars() {
-            try {
-                await database
-                    .getAllCarsFromDB()
-                    .then((result) => {
-                        const dbCars = result.map((car) => ({
-                            id: car.id,
-                            brand: car.brand,
-                            model: car.model,
-                            year: car.year,
-                            pp: car.pp,
-                            drivetrain: car.drivetrain,
-                            image: car.image,
-                            credit: car.credit,
-                            isLimitedStock: car.isLimitedStock,
-                        }));
-                        setCars(dbCars);
+        if (authId) {
+            async function loadAllCars() {
+                try {
+                    const result = await database.getAllCarsFromDB();
+                    const dbCars = result.map((car) => ({
+                        id: car.id,
+                        brand: car.brand,
+                        model: car.model,
+                        year: car.year,
+                        pp: car.pp,
+                        drivetrain: car.drivetrain,
+                        image: car.image,
+                        credit: car.credit,
+                        isLimitedStock: car.isLimitedStock,
+                    }));
+                    setCars(dbCars);
 
-                        //TODO: Set garage cars for curr user
-                    })
-                    .catch((error) => {
-                        console.log(
-                            "Error loading the Cars from the db:",
-                            error
-                        );
-                    });
-            } catch (error) {
-                console.log("Error when trying to read from the db:", error);
+                    // Getting users garage cars from the db
+                    const userId = await database.getUserIdFromAuth(authId);
+                    const initialGarageCars =
+                        await database.getGarageCarsFromDB(userId);
+                    setGarageCars(initialGarageCars);
+                } catch (error) {
+                    console.log(
+                        "Error when trying to read from the db:",
+                        error
+                    );
+                }
             }
+            loadAllCars();
         }
-        loadAllCars();
     }, [authId]);
 
     return (

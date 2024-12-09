@@ -1,10 +1,11 @@
 // React imports
 import { View, Text, Image, Pressable } from "react-native";
-import { useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 // Third-party imports
 import Icon from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // In-project imports
 import styles from "./styles";
@@ -21,9 +22,27 @@ export default function Car({
     credit,
     isLimitedStock,
 }) {
-    const { cars, setCurrentCar } = useContext(CarContext);
+    const {
+        cars,
+        setCurrentCar,
+        garageCars,
+    } = useContext(CarContext);
     const navigation = useNavigation();
 
+    const [localCarInGarage, setLocalCarInGarage] = useState(null);
+
+    /* Side Effects */
+    useFocusEffect(
+        useCallback(() => {
+            setLocalCarInGarage(searchGarage(id));
+        }, [])
+    );
+
+    const searchGarage = (carToFindId) => {
+        return garageCars.some((currCar) => currCar.id === carToFindId);
+    };
+
+    /* Handlers */
     const handleCarPress = () => {
         const pressedCar = cars.find((car) => car.id === id);
         setCurrentCar(pressedCar);
@@ -36,6 +55,13 @@ export default function Car({
             <View style={styles.details}>
                 <Text style={styles.title}>{`${brand} ${model} '${year}`}</Text>
                 <View style={styles.chipContainer}>
+                    {localCarInGarage && (
+                        <MaterialCommunityIcons
+                            name="garage"
+                            size={24}
+                            color="green"
+                        />
+                    )}
                     <Text style={styles.chip}>{`PP ${pp}`}</Text>
                     <Text style={styles.drivetrain}>{drivetrain}</Text>
                 </View>

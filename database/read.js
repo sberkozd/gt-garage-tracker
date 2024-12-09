@@ -2,7 +2,7 @@
 The Firebase read functions for the Cars collection
 */
 
-import { collection, getDocs, where, query } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, where, query } from "firebase/firestore";
 import { db } from "./config";
 
 /*
@@ -22,6 +22,43 @@ export async function getAllCarsFromDB() {
         data.push(post);
     });
     return data;
+}
+
+/*
+Getting all of a specific user's cars in their garage
+*/
+export async function getGarageCarsFromDB(userId) {
+    try {
+        const userRef = doc(db, "users", userId);
+        const userDoc = await getDoc(userRef);
+
+        if (!userDoc.exists()) {
+            console.log("User document not found");
+            return [];
+        }
+
+        const garageCarIds = userDoc.data().carsInGarage || [];
+
+        // Added check here, otherwise the "in" query will fail (as it can't be run on empty array).
+        if (garageCarIds.length === 0) {
+            console.log("The user has no cars in their garage");
+            return [];
+        }
+
+        const carsRef = collection(db, "cars");
+        const carsQuery = query(carsRef, where("__name__", "in", garageCarIds));
+        const querySnapshot = await getDocs(carsQuery);
+
+        const garageCars = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+
+        return garageCars;
+    } catch (error) {
+        console.log("Error fetching garage cars", error.message);
+        return [];
+    }
 }
 
 /*
