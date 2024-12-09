@@ -1,23 +1,25 @@
 // React imports
-import React from "react";
-import { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useFocusEffect } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
 
 // Third party imports
 import { signOut } from "firebase/auth";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Toast from "react-native-toast-message";
+import * as Progress from 'react-native-progress'; 
 
 // Project imports
 import { AuthContext } from "../../context/AuthContext";
-import * as database from "../../database";
+import { CarContext } from "../../context/CarContext";
+import { getAllCarsFromDB } from "../../database/read";
 import { auth } from "../../database/config";
+import styles from "./styles";
 
 export default function GarageSummaryScreen() {
     const navigation = useNavigation();
     const { setIsAuthenticated, setAuthId } = useContext(AuthContext);
+    const { garageCars } = useContext(CarContext);
+    const [totalAvailableCars, setTotalAvailableCars] = useState(0);
 
     /* Side effects */
     useEffect(() => {
@@ -35,6 +37,17 @@ export default function GarageSummaryScreen() {
                 </TouchableOpacity>
             ),
         });
+
+        const fetchTotalAvailableCars = async () => {
+            try {
+                const cars = await getAllCarsFromDB();
+                setTotalAvailableCars(cars.length);
+            } catch (error) {
+                console.error("Error fetching total available cars:", error);
+            }
+        };
+
+        fetchTotalAvailableCars();
     }, [navigation]);
 
     /* Handlers */
@@ -50,9 +63,26 @@ export default function GarageSummaryScreen() {
             });
     };
 
+    const progress = totalAvailableCars > 0 ? garageCars.length / totalAvailableCars : 0;
+
+    const getProgressColor = (progress) => {
+        if (progress >= 1) return { color: '#E5E4E2', text: 'Platinum' };
+        if (progress >= 0.8) return { color: '#800080', text: 'Purple' };
+        if (progress >= 0.5) return { color: '#FFD700', text: 'Gold' };
+        if (progress >= 0.3) return { color: '#C0C0C0', text: 'Silver' };
+        if (progress >= 0.1) return { color: '#CD7F32', text: 'Bronze' }; 
+        return { color: 'gray', text: 'Rookie' };
+    };
+
+    const { color, text } = getProgressColor(progress);
+
     return (
-        <View>
-            <Text>Garage Summary Screen</Text>
+        <View style={styles.container}>
+            <Text style={styles.boldText}>
+                Collected Cars: {garageCars.length} / {totalAvailableCars}
+            </Text>
+            <Progress.Bar progress={progress} width={300} height={20} color={color} />
+            <Text style={styles.collectorLevelText}>Collector Level: {text}</Text>
         </View>
     );
 }
