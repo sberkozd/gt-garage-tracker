@@ -45,8 +45,15 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     addButtonText: {
-        color: "#FFFFFF"
-    }
+        color: "#FFFFFF",
+        fontWeight: "600",
+    },
+    disabledButton: {
+        backgroundColor: "#D3D3D3",
+    },
+    disabledButtonText: {
+        color: "#000000",
+    },
 });
 
 export default styles;

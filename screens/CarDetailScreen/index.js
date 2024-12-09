@@ -15,24 +15,31 @@ import * as database from "../../database";
 
 export default function CarDetailScreen() {
     /* State */
-    const { currentCar, garageCars, setGarageCars, carInGarage, setCarInGarage } = useContext(CarContext);
+    const {
+        currentCar,
+        garageCars,
+        setGarageCars,
+        carInGarage,
+        setCarInGarage,
+    } = useContext(CarContext);
     const { authId } = useContext(AuthContext);
 
     /* Side Effects */
     useEffect(() => {
         setCarInGarage(searchGarage(currentCar));
     }, [garageCars, currentCar]);
-    
+
     const searchGarage = (carToFind) => {
-        return garageCars.some(
-            (currCar) => currCar.id === carToFind.id
-        );
+        return garageCars.some((currCar) => currCar.id === carToFind.id);
     };
 
     const handleAddCarToGarage = async () => {
         try {
             const userId = await database.getUserIdFromAuth(authId);
-            const success = await database.addCarToGarage(userId, currentCar.id);
+            const success = await database.addCarToGarage(
+                userId,
+                currentCar.id
+            );
 
             if (success) {
                 const updatedGarageCars = [...garageCars, currentCar];
@@ -45,9 +52,7 @@ export default function CarDetailScreen() {
                 );
             }
         } catch (error) {
-            showErrorToast(
-                "Failed to add car to garage. Please try again."
-            );
+            showErrorToast("Failed to add car to garage. Please try again.");
         }
     };
 
@@ -155,8 +160,19 @@ export default function CarDetailScreen() {
                 </DataTable.Row>
             </DataTable>
 
-            <Pressable style={styles.addButton} onPress={handleAddCarToGarage}>
-                <Text style={styles.addButtonText}>ADD TO GARAGE</Text>
+            <Pressable
+                style={[styles.addButton, carInGarage && styles.disabledButton]}
+                onPress={!carInGarage ? handleAddCarToGarage : null}
+                disabled={carInGarage}
+            >
+                <Text
+                    style={[
+                        styles.addButtonText,
+                        carInGarage && styles.disabledButtonText,
+                    ]}
+                >
+                    {carInGarage ? "ALREADY IN GARAGE" : "ADD TO GARAGE"}
+                </Text>
             </Pressable>
         </View>
     );
