@@ -22,6 +22,8 @@ export default function App() {
     const [cars, setCars] = useState([]);
     const [garageCars, setGarageCars] = useState([]);
     const [currentCar, setCurrentCar] = useState(null);
+    const [carInGarage, setCarInGarage] = useState(false);
+    const [inCarAddMode, setInCarAddMode] = useState(false);
 
     /* Auth States */
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,6 +82,10 @@ export default function App() {
                         setGarageCars,
                         currentCar,
                         setCurrentCar,
+                        inCarAddMode,
+                        setInCarAddMode,
+                        carInGarage,
+                        setCarInGarage,
                     }}
                 >
                     <NavigationContainer>

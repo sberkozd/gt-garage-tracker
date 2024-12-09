@@ -35,6 +35,18 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
         fontWeight: "600",
     },
+    addButton :{
+        backgroundColor: "#1E3F5A",
+        margin: 10,
+        width: 200,
+        height: 40,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 4,
+    },
+    addButtonText: {
+        color: "#FFFFFF"
+    }
 });
 
 export default styles;

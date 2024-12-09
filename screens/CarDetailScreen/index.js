@@ -1,17 +1,76 @@
 // React imports
 import React from "react";
-import { useContext } from "react";
-import { Image, View, Text } from "react-native";
+import { useContext, useEffect } from "react";
+import { Image, View, Text, Pressable } from "react-native";
 
 // Third-party imports
 import { DataTable } from "react-native-paper";
+import Toast from "react-native-toast-message";
 
 // In-project imports
 import styles from "./styles";
 import { CarContext } from "../../context/CarContext";
+import { AuthContext } from "../../context/AuthContext";
+import * as database from "../../database";
 
 export default function CarDetailScreen() {
-    const { currentCar } = useContext(CarContext);
+    /* State */
+    const { currentCar, garageCars, setGarageCars, carInGarage, setCarInGarage } = useContext(CarContext);
+    const { authId } = useContext(AuthContext);
+
+    /* Side Effects */
+    useEffect(() => {
+        setCarInGarage(searchGarage(currentCar));
+    }, [garageCars, currentCar]);
+    
+    const searchGarage = (carToFind) => {
+        return garageCars.some(
+            (currCar) => currCar.id === carToFind.id
+        );
+    };
+
+    const handleAddCarToGarage = async () => {
+        try {
+            const userId = await database.getUserIdFromAuth(authId);
+            const success = await database.addCarToGarage(userId, currentCar.id);
+
+            if (success) {
+                const updatedGarageCars = [...garageCars, currentCar];
+                setGarageCars(updatedGarageCars);
+                setCarInGarage(true);
+                showSuccessToast("Car added to garage.");
+            } else {
+                showErrorToast(
+                    "Failed to add car to garage. Please try again."
+                );
+            }
+        } catch (error) {
+            showErrorToast(
+                "Failed to add car to garage. Please try again."
+            );
+        }
+    };
+
+    /* Toast logic */
+    const showSuccessToast = (msg) => {
+        Toast.show({
+            type: "success",
+            text1: "Success",
+            text2: msg,
+            visibilityTime: 2200,
+            topOffset: 60,
+        });
+    };
+
+    const showErrorToast = (errMsg) => {
+        Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: errMsg,
+            visibilityTime: 2200,
+            topOffset: 60,
+        });
+    };
 
     return (
         <View style={styles.container}>
@@ -95,6 +154,10 @@ export default function CarDetailScreen() {
                     </DataTable.Cell>
                 </DataTable.Row>
             </DataTable>
+
+            <Pressable style={styles.addButton} onPress={handleAddCarToGarage}>
+                <Text style={styles.addButtonText}>ADD TO GARAGE</Text>
+            </Pressable>
         </View>
     );
 }

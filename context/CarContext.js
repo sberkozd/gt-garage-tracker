@@ -11,4 +11,8 @@ export const CarContext = createContext({
     setCurrentCar: () => {},
     garageCars: false,
     setGarageCars: () => {},
+    inCarAddMode: false,
+    setInCarAddMode: () => {},
+    carInGarage: false,
+    setCarInGarage: () => {},
 });

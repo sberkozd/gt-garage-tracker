@@ -1,3 +1,3 @@
 /* Centralised location for exporting database functions */
-export { getAllCarsFromDB } from "./read";
+export { getAllCarsFromDB, getUserIdFromAuth } from "./read";
 export { addUserToDB, addCarToGarage } from "./write";
