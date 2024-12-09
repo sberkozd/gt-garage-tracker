@@ -6,10 +6,13 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 // Third-party imports
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Toast from "react-native-toast-message";
 
 // In-project imports
 import styles from "./styles";
 import { CarContext } from "../../context/CarContext";
+import { AuthContext } from "../../context/AuthContext";
+import * as database from "../../database";
 
 export default function Car({
     id,
@@ -24,9 +27,14 @@ export default function Car({
 }) {
     const {
         cars,
+        currentCar,
         setCurrentCar,
         garageCars,
+        setGarageCars,
+        inCarAddMode,
+        inGarageMode,
     } = useContext(CarContext);
+    const { authId } = useContext(AuthContext);
     const navigation = useNavigation();
 
     const [localCarInGarage, setLocalCarInGarage] = useState(null);
@@ -37,16 +45,71 @@ export default function Car({
             setLocalCarInGarage(searchGarage(id));
         }, [])
     );
-
+    
     const searchGarage = (carToFindId) => {
         return garageCars.some((currCar) => currCar.id === carToFindId);
     };
 
     /* Handlers */
+
+    /*
+    Dynamic Car onPress functionality
+        - If on the Cars screen, pressing a Car will navigate to its details screen.
+        - If on the Garage screen, pressing a Car will allow a user to remove it from their garage
+    */
     const handleCarPress = () => {
-        const pressedCar = cars.find((car) => car.id === id);
-        setCurrentCar(pressedCar);
-        navigation.navigate("CarDetail");
+        if (inCarAddMode) {
+            const pressedCar = cars.find((car) => car.id === id);
+            setCurrentCar(pressedCar);
+            navigation.navigate("CarDetail");
+        } else if (inGarageMode) {
+           handleRemoveCarFromGarage();
+        }
+    };
+
+    const handleRemoveCarFromGarage = async () => {
+        try {
+            const userId = await database.getUserIdFromAuth(authId);
+            const success = await database.removeCarFromGarage(userId, id);
+
+            if (success) {
+                const updatedGarageCars = garageCars.filter(
+                    (car) => car.id !== id
+                );
+                setGarageCars(updatedGarageCars);
+                setLocalCarInGarage(false);
+                showSuccessToast("Car removed from garage.");
+            } else {
+                showErrorToast(
+                    "Failed to remove car from garage. Please try again."
+                );
+            }
+        } catch (error) {
+            showErrorToast(
+                "Failed to remove car from garage. Please try again."
+            );
+        }
+    };
+
+    /* Toast logic */
+    const showSuccessToast = (msg) => {
+        Toast.show({
+            type: "success",
+            text1: "Success",
+            text2: msg,
+            visibilityTime: 2200,
+            topOffset: 60,
+        });
+    };
+
+    const showErrorToast = (errMsg) => {
+        Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: errMsg,
+            visibilityTime: 2200,
+            topOffset: 60,
+        });
     };
 
     return (

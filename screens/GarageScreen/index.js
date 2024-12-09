@@ -1,6 +1,6 @@
 // React imports
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
     FlatList,
     Modal,
@@ -12,7 +12,7 @@ import {
 
 // Third party imports
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from "react-native-vector-icons/Ionicons";
 
 // Project imports
 import styles from "./styles";
@@ -22,7 +22,7 @@ import CarFilterDialog from "../../components/dialog/CarFilterDialog";
 
 export default function GarageScreen() {
     /* State */
-    const { garageCars } = useContext(CarContext);
+    const { garageCars, inCarAddMode, setInCarAddMode, inGarageMode, setInGarageMode } = useContext(CarContext);
     const navigation = useNavigation();
 
     const [showModal, setShowModal] = useState(false);
@@ -36,6 +36,13 @@ export default function GarageScreen() {
     });
 
     /* Side effects */
+    useFocusEffect(
+        useCallback(() => {
+            setInGarageMode(true);
+            setInCarAddMode(false);
+        }, [])
+    );
+
     useEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -82,7 +89,7 @@ export default function GarageScreen() {
         setFilters(newFilters);
     };
 
-    const filteredCars = garageCars.filter(car => {
+    const filteredCars = garageCars.filter((car) => {
         return (
             car.pp >= filters.minPp &&
             car.pp <= filters.maxPp &&
@@ -114,7 +121,7 @@ export default function GarageScreen() {
                 keyExtractor={(item) => item.id}
             />
 
-            <Modal visible={showModal} transparent={true} animationType="fade"> 
+            <Modal visible={showModal} transparent={true} animationType="fade">
                 <TouchableWithoutFeedback onPress={handleHideModal}>
                     <View style={styles.overlay}>
                         <TouchableWithoutFeedback>
@@ -123,8 +130,8 @@ export default function GarageScreen() {
                                     Managing your Garage
                                 </Text>
                                 <Text style={styles.dialogText}>
-                                    To remove a car from your garage, simply
-                                    tap the car you want to remove.
+                                    To remove a car from your garage, simply tap
+                                    the car you want to remove.
                                 </Text>
                             </View>
                         </TouchableWithoutFeedback>

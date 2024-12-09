@@ -1,5 +1,6 @@
 // React imports
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
     Modal,
     Image,
@@ -9,7 +10,7 @@ import {
     Pressable,
     TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+
 
 // Third-party imports
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -31,12 +32,22 @@ export default function CarDetailScreen() {
         setGarageCars,
         carInGarage,
         setCarInGarage,
+        inCarAddMode,
+        setInCarAddMode,
+        setInGarageMode,
     } = useContext(CarContext);
     const { authId } = useContext(AuthContext);
     const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
 
     /* Side effects */
+    useFocusEffect(
+        useCallback(() => {
+            setInCarAddMode(true);
+            setInGarageMode(false);
+        }, [])
+    );
+
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (

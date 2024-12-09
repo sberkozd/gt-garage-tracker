@@ -1,6 +1,7 @@
 // React imports
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { FlatList, View, Text } from "react-native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 // In-project imports
 import { CarContext } from "../../context/CarContext";
@@ -8,7 +9,15 @@ import Car from "../../components/Car";
 import styles from "./styles";
 
 export default function CarsScreen({ filters }) {
-  const { cars } = useContext(CarContext);
+  const { cars, setInCarAddMode, setInGarageMode } = useContext(CarContext);
+
+  /* Side effects */
+  useFocusEffect(
+    useCallback(() => {
+        setInCarAddMode(true);
+        setInGarageMode(false);
+    }, [])
+);
 
   const filterCars = (cars, filters) => {
     const { limitedStock, minPp, maxPp, minCredit, maxCredit } = filters;

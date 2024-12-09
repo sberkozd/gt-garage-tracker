@@ -23,7 +23,8 @@ export default function App() {
     const [garageCars, setGarageCars] = useState([]);
     const [currentCar, setCurrentCar] = useState(null);
     const [carInGarage, setCarInGarage] = useState(false);
-    const [inCarAddMode, setInCarAddMode] = useState(false);
+    const [inCarAddMode, setInCarAddMode] = useState(true);
+    const [inGarageMode, setInGarageMode] = useState(false);
 
     /* Auth States */
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -84,6 +85,8 @@ export default function App() {
                         setCurrentCar,
                         inCarAddMode,
                         setInCarAddMode,
+                        inGarageMode,
+                        setInGarageMode,
                         carInGarage,
                         setCarInGarage,
                     }}
