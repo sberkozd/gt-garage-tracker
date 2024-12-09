@@ -26,17 +26,24 @@ const styles = StyleSheet.create({
         bottom: 40,
         zIndex: -2, //Needed so that outer toast shows above footer
     },
+    modal: {
+        // backgroundColor: "#D3D3D3",
+    },
     modalView: {
-        backgroundColor: "rgba(255, 231, 51, 0.5)",
+        backgroundColor: "#000000",
         alignSelf: "stretch",
         marginTop: 150,
         margin: 20,
         padding: 10,
         borderRadius: 10,
-        borderWidth: 4,
+        borderWidth: 2,
         borderColor: "#D3D3D3",
         zIndex: -1,
         alignItems: "center",
+    },
+    modalViewSmall: {
+        height: 300,
+        justifyContent: "center",
     },
     modalButton: {
         //backgroundColor: "#1E3F5A",
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFAA33",
     },
     closeButton: {
-        backgroundColor: "#B5271D",
+        backgroundColor: "#8B0000",
     },
     signupButton: {
         backgroundColor: "#8B0000",

@@ -316,8 +316,8 @@ export default function LoginScreen({ setCredentials }) {
                 
                 
 
-                <Modal animationType="slide" visible={showModal}>
-                    <View style={styles.modalView}>
+                <Modal animationType="slide" transparent={true} visible={showModal}>
+                    <View style={[styles.modalView, styles.modalViewSmall]}>
                         <TextInput
                             style={styles.textInputContainer}
                             placeholder="Email Address"
@@ -354,7 +354,7 @@ export default function LoginScreen({ setCredentials }) {
                     <Toast />
                 </Modal>
 
-                <Modal animationType="slide" visible={showSignUpModal}>
+                <Modal style={styles.modal} animationType="slide" transparent={true}  visible={showSignUpModal}>
                     <View style={styles.modalView}>
                         <TextInput
                             style={styles.textInputContainer}
