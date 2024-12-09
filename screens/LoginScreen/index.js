@@ -25,7 +25,7 @@ Regex is used to validate user nickname, email and password inputs
 */
 export default function LoginScreen({ setCredentials }) {
     /* State */
-    const [nickname, setNickname] = useState("No nickname set");
+    const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
     const [pwd, setPwd] = useState("");
 
@@ -33,17 +33,18 @@ export default function LoginScreen({ setCredentials }) {
     const [emailErrTxt, setEmailErrTxt] = useState("");
     const [pwdErrTxt, setPwdErrTxt] = useState("");
 
-    const [nicknameIsValid, setNicknameIsValid] = useState("");
+    const [nicknameIsValid, setNicknameIsValid] = useState(false);
     const [emailIsValid, setEmailIsValid] = useState(false);
     const [pwdIsValid, setPwdIsValid] = useState(false);
 
     const [loginBtnDisabled, setLoginBtnDisabled] = useState(true);
-    const [showModal, setShowModal] = useState(false);
+    const [signUpBtnDisabled, setSignUpBtnDisabled] = useState(true);
     const [passwordResetBtnDisabled, setPasswordResetBtnDisabled] =
         useState(true);
 
+    const [showModal, setShowModal] = useState(false);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
-    const [signUpBtnDisabled, setSignUpBtnDisabled] = useState(true);
+    
 
     const { setIsAuthenticated, setAuthId } = useContext(AuthContext);
 
@@ -65,7 +66,8 @@ export default function LoginScreen({ setCredentials }) {
     */
     useEffect(() => {
         updateLoginButtonState();
-    }, [emailIsValid, pwdIsValid]);
+        updateSignupButtonState();
+    }, [emailIsValid, pwdIsValid, nicknameIsValid]);
 
     /* Handlers */
     const handleForgotPasswordPress = () => {
@@ -94,12 +96,11 @@ export default function LoginScreen({ setCredentials }) {
             setEmailIsValid(false);
             setEmailErrTxt("Please enter a valid email");
             setPasswordResetBtnDisabled(true);
-            setSignUpBtnDisabled(true);
+            //setSignUpBtnDisabled(true);
         } else {
             setEmailIsValid(true);
             setEmailErrTxt("");
             setPasswordResetBtnDisabled(false);
-            setSignUpBtnDisabled(false);
         }
     };
 
@@ -205,9 +206,15 @@ export default function LoginScreen({ setCredentials }) {
     const updateLoginButtonState = () => {
         if (emailIsValid && pwdIsValid) {
             setLoginBtnDisabled(false);
-            setSignUpBtnDisabled(false);
         } else {
             setLoginBtnDisabled(true);
+        }
+    };
+
+    const updateSignupButtonState = () => {
+        if (emailIsValid && pwdIsValid && nicknameIsValid) {
+            setSignUpBtnDisabled(false);
+        } else {
             setSignUpBtnDisabled(true);
         }
     };
