@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Third-party imports
+import * as SplashScreen from "expo-splash-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // In-project imports
@@ -16,6 +17,7 @@ import GarageSummaryScreen from "./screens/GarageSummaryScreen";
 import LoginScreen from "./screens/LoginScreen";
 
 const Tab = createBottomTabNavigator();
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
     /* Car Context States */
@@ -29,6 +31,14 @@ export default function App() {
     /* Auth States */
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [authId, setAuthId] = useState(null);
+
+    /* Splash Screen */
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            SplashScreen.hideAsync();
+        }, 2500);
+        return () => clearTimeout(timer);
+    }, []);
 
     /* Effect to set data from the db to local state */
     useEffect(() => {
