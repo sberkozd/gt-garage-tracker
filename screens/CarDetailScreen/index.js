@@ -1,11 +1,21 @@
 // React imports
-import React from "react";
-import { useContext, useEffect } from "react";
-import { Image, View, Text, Pressable } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+    Modal,
+    Image,
+    View,
+    Text,
+    TouchableWithoutFeedback,
+    Pressable,
+    TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 // Third-party imports
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { DataTable } from "react-native-paper";
 import Toast from "react-native-toast-message";
+import FlipCard from "react-native-flip-card";
 
 // In-project imports
 import styles from "./styles";
@@ -23,14 +33,42 @@ export default function CarDetailScreen() {
         setCarInGarage,
     } = useContext(CarContext);
     const { authId } = useContext(AuthContext);
+    const navigation = useNavigation();
+    const [showModal, setShowModal] = useState(false);
 
-    /* Side Effects */
+    /* Side effects */
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity
+                    onPress={handleShowModal}
+                    style={{ marginLeft: 15 }}
+                >
+                    <MaterialCommunityIcons
+                        name="information-outline"
+                        size={30}
+                        color="#000000"
+                    />
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
+
     useEffect(() => {
         setCarInGarage(searchGarage(currentCar));
     }, [garageCars, currentCar]);
 
     const searchGarage = (carToFind) => {
         return garageCars.some((currCar) => currCar.id === carToFind.id);
+    };
+
+    /* Handlers */
+    const handleShowModal = () => {
+        setShowModal(true);
+    };
+
+    const handleHideModal = () => {
+        setShowModal(false);
     };
 
     const handleAddCarToGarage = async () => {
@@ -79,21 +117,34 @@ export default function CarDetailScreen() {
 
     return (
         <View style={styles.container}>
-            <View
-                style={[
-                    styles.imageContainer,
-                    {
-                        backgroundColor: currentCar.isLimitedStock
-                            ? "red"
-                            : "black",
-                    },
-                ]}
-            >
-                <Image
-                    source={{ uri: currentCar.image }}
-                    style={styles.image}
-                    resizeMode="contain"
-                />
+            <View style={styles.cardContainerz}>
+                <FlipCard
+                    style={styles.card}
+                    friction={1000}
+                    perspective={1000}
+                    clickable={true}
+                >
+                    <View
+                        style={[
+                            styles.face,
+                            styles.imageContainer,
+                            {
+                                backgroundColor: currentCar.isLimitedStock
+                                    ? "red"
+                                    : "black",
+                            },
+                        ]}
+                    >
+                        <Image
+                            source={{ uri: currentCar.image }}
+                            style={styles.image}
+                            resizeMode="contain"
+                        />
+                    </View>
+                    <View style={styles.back}>
+                        <Text>Placeholder Text</Text>
+                    </View>
+                </FlipCard>
             </View>
             <View style={styles.creditContainer}>
                 <Text style={styles.creditText}>Cr.{currentCar.credit}</Text>
@@ -174,6 +225,26 @@ export default function CarDetailScreen() {
                     {carInGarage ? "ALREADY IN GARAGE" : "ADD TO GARAGE"}
                 </Text>
             </Pressable>
+
+            <Modal visible={showModal} transparent={true} animationType="fade">
+                <TouchableWithoutFeedback onPress={handleHideModal}>
+                    <View style={styles.overlay}>
+                        <TouchableWithoutFeedback>
+                            <View style={styles.dialog}>
+                                <Text style={styles.heading}>Car Details</Text>
+                                <Text style={styles.dialogText}>
+                                    On this screen, you can tap the car image in
+                                    order to view more details about it.
+                                </Text>
+                                <Text style={styles.dialogText}>
+                                    If the car is not already in your garage,
+                                    you can also remove it from this screen.
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
         </View>
     );
 }

@@ -54,6 +54,52 @@ const styles = StyleSheet.create({
     disabledButtonText: {
         color: "#000000",
     },
+
+    cardContainerz: {
+        width: 350,
+        marginBottom: 250,
+    },
+
+    card: {
+        width: 350,
+        height: 250,
+    },
+    face: {
+        width: 350,
+        height: 250,
+       //backgroundColor: "red",
+    },
+    back: {
+        width: 350,
+        height: 250,
+        backgroundColor: "green",
+        borderRadius: 8,
+    },
+
+    overlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    dialog: {
+        width: 300,
+        height: 250,
+        textAlign: "center",
+        alignItems: "center",
+        padding: 20,
+        backgroundColor: 'white',
+        borderRadius: 10,
+    },
+    heading: {
+        fontSize: 20,
+        fontWeight: "600",
+        marginBottom: 20,
+    },
+    dialogText: {
+        fontSize: 16,
+        marginBottom: 10,
+    },
 });
 
 export default styles;
