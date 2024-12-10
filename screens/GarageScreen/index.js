@@ -1,7 +1,15 @@
 // React imports
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
+    Animated,
+    ImageBackground,
     FlatList,
     Modal,
     View,
@@ -22,10 +30,11 @@ import CarFilterDialog from "../../components/dialog/CarFilterDialog";
 
 export default function GarageScreen() {
     /* State */
-    const { garageCars, inCarAddMode, setInCarAddMode, inGarageMode, setInGarageMode } = useContext(CarContext);
+    const { garageCars, setInCarAddMode, setInGarageMode } =
+        useContext(CarContext);
     const navigation = useNavigation();
-
     const [showModal, setShowModal] = useState(false);
+    const [showLoadingModal, setShowLoadingModal] = useState(false);
     const [showFilterDialog, setShowFilterDialog] = useState(false);
     const [filters, setFilters] = useState({
         limitedStock: false,
@@ -35,6 +44,9 @@ export default function GarageScreen() {
         maxCredit: 500000,
     });
 
+    // Custom slide animation that starts on the centre of the screen (value 0)
+    const garageSlideAnimation = useRef(new Animated.Value(0)).current;
+
     /* Side effects */
     useFocusEffect(
         useCallback(() => {
@@ -42,6 +54,30 @@ export default function GarageScreen() {
             setInCarAddMode(false);
         }, [])
     );
+
+    useEffect(() => {
+        setShowLoadingModal(true);
+
+        // Starts the animation from the centre of the screen
+        Animated.timing(garageSlideAnimation, {
+            toValue: 0,
+            duration: 0,
+            useNativeDriver: true,
+        }).start();
+
+        // Sets a timer to hide the animation/modal
+        // -1000 slides it upwards out of the range of the screen
+        const timer = setTimeout(() => {
+            Animated.timing(garageSlideAnimation, {
+                toValue: -1000,
+                duration: 2000,
+                useNativeDriver: true,
+            }).start(() => setShowLoadingModal(false));
+        }, 700);
+
+        // Clearing the timer post-animation
+        return () => clearTimeout(timer);
+    }, [garageSlideAnimation]);
 
     useEffect(() => {
         navigation.setOptions({
@@ -120,6 +156,34 @@ export default function GarageScreen() {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
+
+            <Modal
+                visible={showLoadingModal}
+                transparent={true}
+                animationType="none"
+            >
+                <Animated.View
+                    style={[
+                        styles.animatedContainer,
+                        { transform: [{ translateY: garageSlideAnimation }] },
+                    ]}
+                >
+                    <ImageBackground
+                        source={require("../../assets/garageDoor.jpg")}
+                        resizeMode="cover"
+                        style={styles.image}
+                    >
+                        <View style={styles.overlay}>
+                            <View style={styles.loadingDialog}>
+                                <Text style={styles.heading}>
+                                    Opening Your Garage
+                                </Text>
+                                <Text style={styles.dialogText}></Text>
+                            </View>
+                        </View>
+                    </ImageBackground>
+                </Animated.View>
+            </Modal>
 
             <Modal visible={showModal} transparent={true} animationType="fade">
                 <TouchableWithoutFeedback onPress={handleHideModal}>

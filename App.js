@@ -36,7 +36,7 @@ export default function App() {
     useEffect(() => {
         const timer = setTimeout(() => {
             SplashScreen.hideAsync();
-        }, 2500);
+        }, 2000);
         return () => clearTimeout(timer);
     }, []);
 
@@ -103,7 +103,7 @@ export default function App() {
                 >
                     <NavigationContainer>
                         {isAuthenticated ? (
-                            <Tab.Navigator>
+                            <Tab.Navigator initialRouteName="Garage">
                                 <Tab.Screen
                                     name="Cars"
                                     component={CarsStackNavigator}
@@ -119,12 +119,12 @@ export default function App() {
                                     }}
                                 />
                                 <Tab.Screen
-                                    name="Garage Summary"
-                                    component={GarageSummaryScreen}
+                                    name="Garage"
+                                    component={GarageScreen}
                                     options={{
                                         tabBarIcon: ({ color }) => (
                                             <MaterialCommunityIcons
-                                                name="chart-pie"
+                                                name="garage"
                                                 color={color}
                                                 size={30}
                                             />
@@ -132,12 +132,12 @@ export default function App() {
                                     }}
                                 />
                                 <Tab.Screen
-                                    name="Garage"
-                                    component={GarageScreen}
+                                    name="Garage Summary"
+                                    component={GarageSummaryScreen}
                                     options={{
                                         tabBarIcon: ({ color }) => (
                                             <MaterialCommunityIcons
-                                                name="garage"
+                                                name="chart-pie"
                                                 color={color}
                                                 size={30}
                                             />

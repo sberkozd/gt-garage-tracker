@@ -6,7 +6,6 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //backgroundColor: "rgba(255, 231, 51, 0.5)",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -17,7 +16,6 @@ const styles = StyleSheet.create({
         width: 280,
         borderRadius: 5,
         paddingLeft: 10,
-        //borderColor: "#FFAA33",
         borderWidth: 2,
     },
     footer: {
@@ -27,7 +25,7 @@ const styles = StyleSheet.create({
         zIndex: -2, //Needed so that outer toast shows above footer
     },
     modal: {
-        // backgroundColor: "#D3D3D3",
+        // backgroundColor: "#D3D3D3,
     },
     modalView: {
         backgroundColor: "#000000",
@@ -46,7 +44,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     modalButton: {
-        //backgroundColor: "#1E3F5A",
         backgroundColor: "#595959",
         margin: 10,
         width: 200,
@@ -56,7 +53,6 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     disabledButton: {
-        //backgroundColor: "#000000",
         opacity: 0.4,
     },
     loginButton: {
@@ -78,7 +74,6 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#FFFFFF",
     },
-
     image: {
         flex: 1,
         position: "absolute",
