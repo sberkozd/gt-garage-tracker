@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "600",
         marginBottom: 20,
+        textAlign: "center",
     },
     overlay: {
         flex: 1,

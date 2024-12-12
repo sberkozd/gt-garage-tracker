@@ -24,12 +24,14 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 // Project imports
 import styles from "./styles";
+import { AuthContext } from "../../context/AuthContext";
 import { CarContext } from "../../context/CarContext";
 import Car from "../../components/Car";
 import CarFilterDialog from "../../components/dialog/CarFilterDialog";
 
 export default function GarageScreen() {
     /* State */
+    const { currentUser } = useContext(AuthContext);
     const { garageCars, setInCarAddMode, setInGarageMode } =
         useContext(CarContext);
     const navigation = useNavigation();
@@ -167,7 +169,7 @@ export default function GarageScreen() {
                             >
                                 <View style={styles.loadingDialog}>
                                     <Text style={styles.heading}>
-                                        Opening Your Garage
+                                        {`Hi ${currentUser.nickname}!\n\nOpening Your Garage`}
                                     </Text>
                                 </View>
                             </ImageBackground>

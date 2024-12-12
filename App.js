@@ -33,6 +33,7 @@ export default function App() {
     /* Auth States */
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [authId, setAuthId] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     /* Side effects */
@@ -85,8 +86,14 @@ export default function App() {
                     }));
                     setCars(dbCars);
 
-                    // Getting users garage cars from the db
+                    
                     const userId = await database.getUserIdFromAuth(authId);
+
+                    // Getting user object from db
+                    const userObject = await database.getUserFromUserId(userId);
+                    setCurrentUser(userObject);
+
+                    // Getting users garage cars from the db
                     const initialGarageCars =
                         await database.getGarageCarsFromDB(userId);
                     setGarageCars(initialGarageCars);
@@ -113,6 +120,8 @@ export default function App() {
                     setIsAuthenticated,
                     authId,
                     setAuthId,
+                    currentUser,
+                    setCurrentUser,
                 }}
             >
                 <CarContext.Provider

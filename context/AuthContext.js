@@ -5,4 +5,6 @@ export const AuthContext = createContext({
   setIsAuthenticated: () => {},
   authId: [],
   setAuthId: () => {},
+  currentUser: {},
+  setCurrentUser: () => {},
 });

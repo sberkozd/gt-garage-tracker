@@ -88,3 +88,24 @@ export async function getUserIdFromAuth(authId) {
         return null;
     }
 }
+
+
+/*
+Helper function which gets the full user object from the userId
+*/
+export async function getUserFromUserId(userId) {
+    try {
+        const userDocRef = doc(db, "users", userId); 
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            return userDoc.data(); 
+        } else {
+            console.log("No user found with the passed userId.");
+            return null;
+        }
+    } catch (error) {
+        console.log("Error fetching user object:", error.message);
+        return null;
+    }
+}
