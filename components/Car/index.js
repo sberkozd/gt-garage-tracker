@@ -43,7 +43,7 @@ export default function Car({
     useFocusEffect(
         useCallback(() => {
             setLocalCarInGarage(searchGarage(id));
-        }, [])
+        }, [id, garageCars])
     );
     
     const searchGarage = (carToFindId) => {
