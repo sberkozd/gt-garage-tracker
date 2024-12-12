@@ -4,7 +4,6 @@ import { useCallback, useContext, useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 // Third-party imports
-import Icon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Toast from "react-native-toast-message";
 
@@ -138,7 +137,7 @@ export default function Car({
                 <View style={styles.iconContainer}>
                     {isLimitedStock && (
                         <View style={styles.limitedStockContainer}>
-                            <Icon name="warning" size={20} color="red" />
+                            <MaterialCommunityIcons name="alert" size={20} color="red" />
                         </View>
                     )}
                     {localCarInGarage && (
