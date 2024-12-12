@@ -16,6 +16,7 @@ import CarsStackNavigator from "./components/CarsStackNavigator";
 import GarageScreen from "./screens/GarageScreen";
 import GarageSummaryScreen from "./screens/GarageSummaryScreen";
 import LoginScreen from "./screens/LoginScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import SplashScreen from "./components/SplashScreen";
 
 const Tab = createBottomTabNavigator();
@@ -166,7 +167,20 @@ export default function App() {
                                     options={{
                                         tabBarIcon: ({ color }) => (
                                             <MaterialCommunityIcons
-                                                name="chart-pie"
+                                                name="chart-bar-stacked"
+                                                color={color}
+                                                size={30}
+                                            />
+                                        ),
+                                    }}
+                                />
+                                <Tab.Screen
+                                    name="Settings"
+                                    component={SettingsScreen}
+                                    options={{
+                                        tabBarIcon: ({ color }) => (
+                                            <MaterialCommunityIcons
+                                                name="cog"
                                                 color={color}
                                                 size={30}
                                             />
