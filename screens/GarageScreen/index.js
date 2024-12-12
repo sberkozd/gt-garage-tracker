@@ -33,9 +33,6 @@ export default function GarageScreen() {
     const { garageCars, setInCarAddMode, setInGarageMode } =
         useContext(CarContext);
     const navigation = useNavigation();
-    const [showModal, setShowModal] = useState(false);
-    const [showLoadingModal, setShowLoadingModal] = useState(false);
-    const [showFilterDialog, setShowFilterDialog] = useState(false);
     const [filters, setFilters] = useState({
         limitedStock: false,
         minPp: 0,
@@ -43,6 +40,8 @@ export default function GarageScreen() {
         minCredit: 0,
         maxCredit: 500000,
     });
+
+    const [activeModal, setActiveModal] = useState("loading");
 
     // Custom slide animation that starts on the centre of the screen (value 0)
     const garageSlideAnimation = useRef(new Animated.Value(0)).current;
@@ -56,7 +55,7 @@ export default function GarageScreen() {
     );
 
     useEffect(() => {
-        setShowLoadingModal(true);
+        handleShowLoadingModal();
 
         // Starts the animation from the centre of the screen
         Animated.timing(garageSlideAnimation, {
@@ -72,7 +71,7 @@ export default function GarageScreen() {
                 toValue: -1000,
                 duration: 2000,
                 useNativeDriver: true,
-            }).start(() => setShowLoadingModal(false));
+            }).start(() => setActiveModal(null));
         }, 700);
 
         // Clearing the timer post-animation
@@ -83,7 +82,7 @@ export default function GarageScreen() {
         navigation.setOptions({
             headerLeft: () => (
                 <TouchableOpacity
-                    onPress={handleShowModal}
+                    onPress={handleShowMainModal}
                     style={{ marginLeft: 15 }}
                 >
                     <MaterialCommunityIcons
@@ -98,28 +97,17 @@ export default function GarageScreen() {
                     name="filter"
                     size={25}
                     style={{ marginRight: 15 }}
-                    onPress={() => setShowFilterDialog(true)}
+                    onPress={handleShowFilterDialog}
                 />
             ),
         });
     }, [navigation]);
 
     /* Handlers */
-    const handleShowModal = () => {
-        setShowModal(true);
-    };
-
-    const handleHideModal = () => {
-        setShowModal(false);
-    };
-
-    const handleShowFilterDialog = () => {
-        setShowFilterDialog(true);
-    };
-
-    const handleHideFilterDialog = () => {
-        setShowFilterDialog(false);
-    };
+    const handleShowLoadingModal = () => setActiveModal("loading");
+    const handleShowMainModal = () => setActiveModal("main");
+    const handleShowFilterDialog = () => setActiveModal("filter");
+    const handleCloseModals = () => setActiveModal(null);
 
     const handleApplyFilters = (newFilters) => {
         setFilters(newFilters);
@@ -151,19 +139,17 @@ export default function GarageScreen() {
 
     return (
         <>
-            {!showLoadingModal ? (
-                <FlatList
-                    data={filteredCars}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                />
-            ) : (
-                <View style={{ flex: 1 }}>
-                    <Modal
-                        visible={showLoadingModal}
-                        transparent={true}
-                        animationType="none"
-                    >
+            {/* List of cars */}
+            <FlatList
+                data={filteredCars}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+            />
+
+            {/* Loading Modal (Garage door) */}
+            {activeModal === "loading" && (
+                <Modal transparent={true} animationType="none" visible={true}>
+                    <View style={styles.overlay}>
                         <Animated.View
                             style={[
                                 styles.animatedContainer,
@@ -179,48 +165,46 @@ export default function GarageScreen() {
                                 resizeMode="cover"
                                 style={styles.image}
                             >
-                                <View style={styles.overlay}>
-                                    <View style={styles.loadingDialog}>
-                                        <Text style={styles.heading}>
-                                            Opening Your Garage
-                                        </Text>
-                                        <Text style={styles.dialogText}></Text>
-                                    </View>
+                                <View style={styles.loadingDialog}>
+                                    <Text style={styles.heading}>
+                                        Opening Your Garage
+                                    </Text>
                                 </View>
                             </ImageBackground>
                         </Animated.View>
-                    </Modal>
+                    </View>
+                </Modal>
+            )}
 
-                    <Modal
-                        visible={showModal}
-                        transparent={true}
-                        animationType="fade"
-                    >
-                        <TouchableWithoutFeedback onPress={handleHideModal}>
-                            <View style={styles.overlay}>
-                                <TouchableWithoutFeedback>
-                                    <View style={styles.dialog}>
-                                        <Text style={styles.heading}>
-                                            Managing your Garage
-                                        </Text>
-                                        <Text style={styles.dialogText}>
-                                            To remove a car from your garage,
-                                            simply tap the car you want to
-                                            remove.
-                                        </Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </Modal>
+            {/* Info modal */}
+            {activeModal === "main" && (
+                <Modal transparent={true} animationType="fade" visible={true}>
+                    <TouchableWithoutFeedback onPress={handleCloseModals}>
+                        <View style={styles.overlay}>
+                            <TouchableWithoutFeedback>
+                                <View style={styles.dialog}>
+                                    <Text style={styles.heading}>
+                                        Managing your Garage
+                                    </Text>
+                                    <Text style={styles.dialogText}>
+                                        To remove a car from your garage, simply
+                                        tap the car you want to remove.
+                                    </Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+            )}
 
-                    <CarFilterDialog
-                        visible={showFilterDialog}
-                        onClose={handleHideFilterDialog}
-                        onApply={handleApplyFilters}
-                        limitedStock={filters.limitedStock}
-                    />
-                </View>
+            {/* Filter modal */}
+            {activeModal === "filter" && (
+                <CarFilterDialog
+                    visible={true}
+                    onClose={handleCloseModals}
+                    onApply={handleApplyFilters}
+                    limitedStock={filters.limitedStock}
+                />
             )}
         </>
     );

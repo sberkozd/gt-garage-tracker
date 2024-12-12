@@ -3,9 +3,9 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
     },
     dialog: {
         width: 300,
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         alignItems: "center",
         padding: 20,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderRadius: 10,
     },
     heading: {
@@ -24,15 +24,11 @@ const styles = StyleSheet.create({
     dialogText: {
         fontSize: 16,
     },
-
-
-
     heading: {
         fontSize: 20,
         fontWeight: "600",
         marginBottom: 20,
     },
-
     overlay: {
         flex: 1,
         justifyContent: "center",
@@ -54,15 +50,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: "#FFAA33",
     },
-
     image: {
         // Shorthand for Position absolute, all to 0
-      ...StyleSheet.absoluteFillObject, 
+        ...StyleSheet.absoluteFillObject,
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
         opacity: 1,
-
         backgroundColor: "#000000",
     },
 });
