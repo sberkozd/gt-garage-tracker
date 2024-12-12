@@ -149,7 +149,7 @@ export default function CarDetailScreen() {
 
     return (
         <View style={styles.container}>
-            <View style={styles.cardContainerz}>
+            <View style={styles.flipCardContainer}>
                 <FlipCard
                     style={styles.card}
                     friction={1000}
@@ -174,7 +174,7 @@ export default function CarDetailScreen() {
                         />
                     </View>
                     <View style={styles.back}>
-                        <Text>Placeholder Text</Text>
+                        <Text style={styles.backText}>{currentCar.description}</Text>
                     </View>
                 </FlipCard>
             </View>
@@ -190,7 +190,7 @@ export default function CarDetailScreen() {
                         },
                     ]}
                 >
-                    {currentCar.isLimitedStock ? "Limited Stock" : "In Stock"}
+                    {currentCar.isLimitedStock ? "Limited Stock" : " Many In Stock"}
                 </Text>
             </View>
 

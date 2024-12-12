@@ -75,6 +75,7 @@ export default function App() {
                         brand: car.brand,
                         model: car.model,
                         year: car.year,
+                        description: car.description,
                         pp: car.pp,
                         drivetrain: car.drivetrain,
                         image: car.image,

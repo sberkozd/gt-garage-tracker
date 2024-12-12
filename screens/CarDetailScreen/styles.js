@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
         color: "#000000",
     },
 
-    cardContainerz: {
+    flipCardContainer: {
         width: 350,
         marginBottom: 250,
+        marginTop: 20,
     },
-
     card: {
         width: 350,
         height: 250,
@@ -67,15 +67,21 @@ const styles = StyleSheet.create({
     face: {
         width: 350,
         height: 250,
-       //backgroundColor: "red",
     },
     back: {
         width: 350,
         height: 250,
-        backgroundColor: "green",
+        backgroundColor: "#D3D3D3",
         borderRadius: 8,
+        padding: 10,
+        justifyContent: "center",
     },
-
+    backText: {
+        color: "#000000",
+        fontSize: 20,
+        fontWeight: "600",
+        textAlign: "center",
+    },
     overlay: {
         flex: 1,
         justifyContent: 'center',
