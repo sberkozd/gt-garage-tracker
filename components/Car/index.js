@@ -1,6 +1,6 @@
 // React imports
-import { View, Text, Image, Pressable } from "react-native";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { Alert, View, Text, Image, Pressable } from "react-native";
+import { useCallback, useContext, useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 // Third-party imports
@@ -27,7 +27,6 @@ export default function Car({
 }) {
     const {
         cars,
-        currentCar,
         setCurrentCar,
         garageCars,
         setGarageCars,
@@ -68,27 +67,47 @@ export default function Car({
     };
 
     const handleRemoveCarFromGarage = async () => {
-        try {
-            const userId = await database.getUserIdFromAuth(authId);
-            const success = await database.removeCarFromGarage(userId, id);
+        Alert.alert(
+            "Remove Car?",
+            `Are you sure you want to remove your ${year} ${brand} ${model} from your garage?`,
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel",
+                },
+                {
+                    text: "OK",
+                    onPress: async () => {
+                        try {
+                            const userId = await database.getUserIdFromAuth(
+                                authId
+                            );
+                            const success = await database.removeCarFromGarage(
+                                userId,
+                                id
+                            );
 
-            if (success) {
-                const updatedGarageCars = garageCars.filter(
-                    (car) => car.id !== id
-                );
-                setGarageCars(updatedGarageCars);
-                setLocalCarInGarage(false);
-                showSuccessToast("Car removed from garage.");
-            } else {
-                showErrorToast(
-                    "Failed to remove car from garage. Please try again."
-                );
-            }
-        } catch (error) {
-            showErrorToast(
-                "Failed to remove car from garage. Please try again."
-            );
-        }
+                            if (success) {
+                                const updatedGarageCars = garageCars.filter(
+                                    (car) => car.id !== id
+                                );
+                                setGarageCars(updatedGarageCars);
+                                setLocalCarInGarage(false);
+                                showSuccessToast("Car removed from garage.");
+                            } else {
+                                showErrorToast(
+                                    "Failed to remove car from garage. Please try again."
+                                );
+                            }
+                        } catch (error) {
+                            showErrorToast(
+                                "Failed to remove car from garage. Please try again."
+                            );
+                        }
+                    },
+                },
+            ]
+        );
     };
 
     /* Toast logic */

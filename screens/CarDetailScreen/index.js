@@ -2,6 +2,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
+    Alert,
     Modal,
     Image,
     View,
@@ -10,7 +11,6 @@ import {
     Pressable,
     TouchableOpacity,
 } from "react-native";
-
 
 // Third-party imports
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -32,7 +32,6 @@ export default function CarDetailScreen() {
         setGarageCars,
         carInGarage,
         setCarInGarage,
-        inCarAddMode,
         setInCarAddMode,
         setInGarageMode,
     } = useContext(CarContext);
@@ -83,26 +82,48 @@ export default function CarDetailScreen() {
     };
 
     const handleAddCarToGarage = async () => {
-        try {
-            const userId = await database.getUserIdFromAuth(authId);
-            const success = await database.addCarToGarage(
-                userId,
-                currentCar.id
-            );
+        Alert.alert(
+            "Add Car?",
+            `Are you sure you want to add the ${currentCar.year} ${currentCar.brand} ${currentCar.model} to your garage?`,
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel",
+                },
+                {
+                    text: "OK",
+                    onPress: async () => {
+                        try {
+                            const userId = await database.getUserIdFromAuth(
+                                authId
+                            );
+                            const success = await database.addCarToGarage(
+                                userId,
+                                currentCar.id
+                            );
 
-            if (success) {
-                const updatedGarageCars = [...garageCars, currentCar];
-                setGarageCars(updatedGarageCars);
-                setCarInGarage(true);
-                showSuccessToast("Car added to garage.");
-            } else {
-                showErrorToast(
-                    "Failed to add car to garage. Please try again."
-                );
-            }
-        } catch (error) {
-            showErrorToast("Failed to add car to garage. Please try again.");
-        }
+                            if (success) {
+                                const updatedGarageCars = [
+                                    ...garageCars,
+                                    currentCar,
+                                ];
+                                setGarageCars(updatedGarageCars);
+                                setCarInGarage(true);
+                                showSuccessToast("Car added to garage.");
+                            } else {
+                                showErrorToast(
+                                    "Failed to add car to garage. Please try again."
+                                );
+                            }
+                        } catch (error) {
+                            showErrorToast(
+                                "Failed to add car to garage. Please try again."
+                            );
+                        }
+                    },
+                },
+            ]
+        );
     };
 
     /* Toast logic */
