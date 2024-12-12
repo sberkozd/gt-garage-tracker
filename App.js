@@ -4,10 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Third-party imports
-import * as SplashScreen from "expo-splash-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { onAuthStateChanged } from "firebase/auth";
 
 // In-project imports
+import { auth } from "./database/config";
 import { AuthContext } from "./context/AuthContext";
 import { CarContext } from "./context/CarContext";
 import * as database from "./database";
@@ -15,9 +16,9 @@ import CarsStackNavigator from "./components/CarsStackNavigator";
 import GarageScreen from "./screens/GarageScreen";
 import GarageSummaryScreen from "./screens/GarageSummaryScreen";
 import LoginScreen from "./screens/LoginScreen";
+import SplashScreen from "./components/SplashScreen";
 
 const Tab = createBottomTabNavigator();
-SplashScreen.preventAutoHideAsync();
 
 export default function App() {
     /* Car Context States */
@@ -31,13 +32,36 @@ export default function App() {
     /* Auth States */
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [authId, setAuthId] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    /* Splash Screen */
+    /* Side effects */
+
+    /*
+    Use effect for auth persistence.
+    Due to the login screen visibility being dependent on
+    isAuthenticated, if a users auth is present, they do not 
+    need to login again until their session expires or they log out
+
+    The timer is used to add an additional 1 second delay for
+    the splash screen to be shown
+    */
     useEffect(() => {
-        const timer = setTimeout(() => {
-            SplashScreen.hideAsync();
-        }, 2000);
-        return () => clearTimeout(timer);
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setAuthId(user.uid);
+                setIsAuthenticated(true);
+            } else {
+                setAuthId(null);
+                setIsAuthenticated(false);
+            }
+            const timer = setTimeout(() => {
+                setLoading(false);
+            }, 1000);
+
+            return () => clearTimeout(timer);
+        });
+
+        return unsubscribe;
     }, []);
 
     /* Effect to set data from the db to local state */
@@ -74,6 +98,10 @@ export default function App() {
             loadAllCars();
         }
     }, [authId]);
+
+    if (loading) {
+        return <SplashScreen></SplashScreen>;
+    }
 
     return (
         <>

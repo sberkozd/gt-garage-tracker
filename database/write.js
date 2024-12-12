@@ -46,7 +46,7 @@ export async function addCarToGarage(userId, carId) {
         console.log(`Car ${carId} added to user ${userId}'s garage.`);
         return true;
     } catch (error) {
-        console.error("Error adding car to garage:", error.message);
+        console.log("Error adding car to garage:", error.message);
         return false;
     }
 }
@@ -64,7 +64,7 @@ export async function removeCarFromGarage(userId, carId) {
         );
         return true;
     } catch (error) {
-        console.error("Error removing car from garage:", error.message);
+        console.log("Error removing car from garage:", error.message);
         return false;
     }
 }

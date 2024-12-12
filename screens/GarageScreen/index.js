@@ -151,64 +151,77 @@ export default function GarageScreen() {
 
     return (
         <>
-            <FlatList
-                data={filteredCars}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-            />
-
-            <Modal
-                visible={showLoadingModal}
-                transparent={true}
-                animationType="none"
-            >
-                <Animated.View
-                    style={[
-                        styles.animatedContainer,
-                        { transform: [{ translateY: garageSlideAnimation }] },
-                    ]}
-                >
-                    <ImageBackground
-                        source={require("../../assets/garageDoor.jpg")}
-                        resizeMode="cover"
-                        style={styles.image}
+            {!showLoadingModal ? (
+                <FlatList
+                    data={filteredCars}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                />
+            ) : (
+                <View style={{ flex: 1 }}>
+                    <Modal
+                        visible={showLoadingModal}
+                        transparent={true}
+                        animationType="none"
                     >
-                        <View style={styles.overlay}>
-                            <View style={styles.loadingDialog}>
-                                <Text style={styles.heading}>
-                                    Opening Your Garage
-                                </Text>
-                                <Text style={styles.dialogText}></Text>
-                            </View>
-                        </View>
-                    </ImageBackground>
-                </Animated.View>
-            </Modal>
+                        <Animated.View
+                            style={[
+                                styles.animatedContainer,
+                                {
+                                    transform: [
+                                        { translateY: garageSlideAnimation },
+                                    ],
+                                },
+                            ]}
+                        >
+                            <ImageBackground
+                                source={require("../../assets/garageDoor.jpg")}
+                                resizeMode="cover"
+                                style={styles.image}
+                            >
+                                <View style={styles.overlay}>
+                                    <View style={styles.loadingDialog}>
+                                        <Text style={styles.heading}>
+                                            Opening Your Garage
+                                        </Text>
+                                        <Text style={styles.dialogText}></Text>
+                                    </View>
+                                </View>
+                            </ImageBackground>
+                        </Animated.View>
+                    </Modal>
 
-            <Modal visible={showModal} transparent={true} animationType="fade">
-                <TouchableWithoutFeedback onPress={handleHideModal}>
-                    <View style={styles.overlay}>
-                        <TouchableWithoutFeedback>
-                            <View style={styles.dialog}>
-                                <Text style={styles.heading}>
-                                    Managing your Garage
-                                </Text>
-                                <Text style={styles.dialogText}>
-                                    To remove a car from your garage, simply tap
-                                    the car you want to remove.
-                                </Text>
+                    <Modal
+                        visible={showModal}
+                        transparent={true}
+                        animationType="fade"
+                    >
+                        <TouchableWithoutFeedback onPress={handleHideModal}>
+                            <View style={styles.overlay}>
+                                <TouchableWithoutFeedback>
+                                    <View style={styles.dialog}>
+                                        <Text style={styles.heading}>
+                                            Managing your Garage
+                                        </Text>
+                                        <Text style={styles.dialogText}>
+                                            To remove a car from your garage,
+                                            simply tap the car you want to
+                                            remove.
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
                             </View>
                         </TouchableWithoutFeedback>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
+                    </Modal>
 
-            <CarFilterDialog
-                visible={showFilterDialog}
-                onClose={handleHideFilterDialog}
-                onApply={handleApplyFilters}
-                limitedStock={filters.limitedStock}
-            />
+                    <CarFilterDialog
+                        visible={showFilterDialog}
+                        onClose={handleHideFilterDialog}
+                        onApply={handleApplyFilters}
+                        limitedStock={filters.limitedStock}
+                    />
+                </View>
+            )}
         </>
     );
 }

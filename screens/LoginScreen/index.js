@@ -52,19 +52,18 @@ export default function LoginScreen({ setCredentials }) {
     const [showModal, setShowModal] = useState(false);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
 
-    const { setIsAuthenticated, setAuthId } = useContext(AuthContext);
+    const { setIsAuthenticated, authId, setAuthId } = useContext(AuthContext);
 
     /*
-    Ensures that there are no active users signed in when the login page is entered
+    Set as authenticated, which stops the login screen being shown
+    if a user is already authenticated
     */
     useEffect(() => {
-        signOut(auth)
-            .then(() => {
-                showSuccessToast("Successfully signed out");
-            })
-            .catch(() => {
-                showErrorToast("Error signing users out");
-            });
+        if (authId) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
     }, []);
 
     /*
@@ -102,7 +101,6 @@ export default function LoginScreen({ setCredentials }) {
             setEmailIsValid(false);
             setEmailErrTxt("Please enter a valid email");
             setPasswordResetBtnDisabled(true);
-            //setSignUpBtnDisabled(true);
         } else {
             setEmailIsValid(true);
             setEmailErrTxt("");
@@ -249,7 +247,9 @@ export default function LoginScreen({ setCredentials }) {
         <>
             <View style={styles.container} setCredentials={setCredentials}>
                 <ImageBackground
-                    source={{ uri: "https://wallpapers.com/images/hd/garage-background-lsvpd9p5e1h34yi6.jpg" }}
+                    source={{
+                        uri: "https://wallpapers.com/images/hd/garage-background-lsvpd9p5e1h34yi6.jpg",
+                    }}
                     resizeMode="cover"
                     style={styles.image}
                 >
@@ -274,22 +274,25 @@ export default function LoginScreen({ setCredentials }) {
                     <InputMsgBox text={pwdErrTxt}></InputMsgBox>
 
                     <ImageBackground
-                    source={{ uri: "https://media.istockphoto.com/id/1369079055/vector/vector-carbon-kevlar-fiber-pattern-texture-background.jpg?s=612x612&w=0&k=20&c=y5mEysSCmAgpRhNmQ51Rquyt5i3cKz8I1AEADEvr4Mo=" }}
-                    resizeMode="cover"
-                    style={styles.buttonImage}
-                >
-                    <Pressable
-                        style={[
-                            styles.modalButton,
-                            styles.loginButton,
-                            loginBtnDisabled && styles.disabledButton,
-                        ]}
-                        onPress={handleLoginPress}
-                        disabled={loginBtnDisabled}
+                        source={{
+                            uri: "https://media.istockphoto.com/id/1369079055/vector/vector-carbon-kevlar-fiber-pattern-texture-background.jpg?s=612x612&w=0&k=20&c=y5mEysSCmAgpRhNmQ51Rquyt5i3cKz8I1AEADEvr4Mo=",
+                        }}
+                        resizeMode="cover"
+                        style={styles.buttonImage}
                     >
-                        <Text style={styles.modalButtonText}>Enter Garage</Text>
-                    </Pressable>
-
+                        <Pressable
+                            style={[
+                                styles.modalButton,
+                                styles.loginButton,
+                                loginBtnDisabled && styles.disabledButton,
+                            ]}
+                            onPress={handleLoginPress}
+                            disabled={loginBtnDisabled}
+                        >
+                            <Text style={styles.modalButtonText}>
+                                Enter Garage
+                            </Text>
+                        </Pressable>
                     </ImageBackground>
 
                     <Pressable
@@ -313,100 +316,113 @@ export default function LoginScreen({ setCredentials }) {
                             Aggrey Nhiwatiwa + Berk Ozdemir © Copyright 2024
                         </Text>
                     </View>
-                
-                
 
-                <Modal animationType="slide" transparent={true} visible={showModal}>
-                    <View style={[styles.modalView, styles.modalViewSmall]}>
-                        <TextInput
-                            style={styles.textInputContainer}
-                            placeholder="Email Address"
-                            onChangeText={handleEmailChange}
-                            value={email}
-                            keyboardType={"email"}
-                            autoCapitalize="none"
-                        />
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={showModal}
+                    >
+                        <View style={[styles.modalView, styles.modalViewSmall]}>
+                            <TextInput
+                                style={styles.textInputContainer}
+                                placeholder="Email Address"
+                                onChangeText={handleEmailChange}
+                                value={email}
+                                keyboardType={"email"}
+                                autoCapitalize="none"
+                            />
 
-                        <InputMsgBox text={emailErrTxt}></InputMsgBox>
+                            <InputMsgBox text={emailErrTxt}></InputMsgBox>
 
-                        <Pressable
-                            style={[
-                                styles.modalButton,
-                                styles.loginButton,
-                                passwordResetBtnDisabled &&
-                                    styles.disabledButton,
-                            ]}
-                            onPress={handleSendPasswordResetLink}
-                            disabled={passwordResetBtnDisabled}
-                        >
-                            <Text style={styles.modalButtonText}>
-                                Request Reset
-                            </Text>
-                        </Pressable>
+                            <Pressable
+                                style={[
+                                    styles.modalButton,
+                                    styles.loginButton,
+                                    passwordResetBtnDisabled &&
+                                        styles.disabledButton,
+                                ]}
+                                onPress={handleSendPasswordResetLink}
+                                disabled={passwordResetBtnDisabled}
+                            >
+                                <Text style={styles.modalButtonText}>
+                                    Request Reset
+                                </Text>
+                            </Pressable>
 
-                        <Pressable
-                            style={[styles.modalButton, styles.closeButton]}
-                            onPress={handleModalToggle}
-                        >
-                            <Text style={styles.modalButtonText}>Close</Text>
-                        </Pressable>
-                    </View>
-                    <Toast />
-                </Modal>
+                            <Pressable
+                                style={[styles.modalButton, styles.closeButton]}
+                                onPress={handleModalToggle}
+                            >
+                                <Text style={styles.modalButtonText}>
+                                    Close
+                                </Text>
+                            </Pressable>
+                        </View>
+                        <Toast />
+                    </Modal>
 
-                <Modal style={styles.modal} animationType="slide" transparent={true}  visible={showSignUpModal}>
-                    <View style={styles.modalView}>
-                        <TextInput
-                            style={styles.textInputContainer}
-                            placeholder="Nickname"
-                            onChangeText={handleNicknameChange}
-                            value={nickname}
-                        />
+                    <Modal
+                        style={styles.modal}
+                        animationType="slide"
+                        transparent={true}
+                        visible={showSignUpModal}
+                    >
+                        <View style={styles.modalView}>
+                            <TextInput
+                                style={styles.textInputContainer}
+                                placeholder="Nickname"
+                                onChangeText={handleNicknameChange}
+                                value={nickname}
+                            />
 
-                        <InputMsgBox text={nicknameErrTxt}></InputMsgBox>
+                            <InputMsgBox text={nicknameErrTxt}></InputMsgBox>
 
-                        <TextInput
-                            style={styles.textInputContainer}
-                            placeholder="Email Address"
-                            onChangeText={handleEmailChange}
-                            value={email}
-                            keyboardType={"email"}
-                            autoCapitalize="none"
-                        />
+                            <TextInput
+                                style={styles.textInputContainer}
+                                placeholder="Email Address"
+                                onChangeText={handleEmailChange}
+                                value={email}
+                                keyboardType={"email"}
+                                autoCapitalize="none"
+                            />
 
-                        <InputMsgBox text={emailErrTxt}></InputMsgBox>
+                            <InputMsgBox text={emailErrTxt}></InputMsgBox>
 
-                        <TextInput
-                            style={styles.textInputContainer}
-                            placeholder="Password"
-                            onChangeText={handlePwdChange}
-                            secureTextEntry={true}
-                            value={pwd}
-                        />
+                            <TextInput
+                                style={styles.textInputContainer}
+                                placeholder="Password"
+                                onChangeText={handlePwdChange}
+                                secureTextEntry={true}
+                                value={pwd}
+                            />
 
-                        <InputMsgBox text={pwdErrTxt}></InputMsgBox>
+                            <InputMsgBox text={pwdErrTxt}></InputMsgBox>
 
-                        <Pressable
-                            style={[
-                                styles.modalButton,
-                                styles.loginButton,
-                                signUpBtnDisabled && styles.disabledButton,
-                            ]}
-                            onPress={handleSignUpConfirm}
-                            disabled={signUpBtnDisabled}
-                        >
-                            <Text style={styles.modalButtonText}>Sign Up</Text>
-                        </Pressable>
+                            <Pressable
+                                style={[
+                                    styles.modalButton,
+                                    styles.loginButton,
+                                    signUpBtnDisabled && styles.disabledButton,
+                                ]}
+                                onPress={handleSignUpConfirm}
+                                disabled={signUpBtnDisabled}
+                            >
+                                <Text style={styles.modalButtonText}>
+                                    Sign Up
+                                </Text>
+                            </Pressable>
 
-                        <Pressable
-                            style={[styles.modalButton, styles.closeButton]}
-                            onPress={handleSignUpModalToggle}
-                        >
-                            <Text style={styles.modalButtonText}>Close</Text>
-                        </Pressable>
-                    </View>
-                    <Toast />
-                </Modal>
+                            <Pressable
+                                style={[styles.modalButton, styles.closeButton]}
+                                onPress={handleSignUpModalToggle}
+                            >
+                                <Text style={styles.modalButtonText}>
+                                    Close
+                                </Text>
+                            </Pressable>
+                        </View>
+                        <Toast />
+                    </Modal>
                 </ImageBackground>
             </View>
         </>

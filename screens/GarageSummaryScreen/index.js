@@ -43,7 +43,7 @@ export default function GarageSummaryScreen() {
                 const cars = await getAllCarsFromDB();
                 setTotalAvailableCars(cars.length);
             } catch (error) {
-                console.error("Error fetching total available cars:", error);
+                console.log("Error fetching total available cars:", error);
             }
         };
 

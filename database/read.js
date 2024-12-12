@@ -2,7 +2,14 @@
 The Firebase read functions for the Cars collection
 */
 
-import { collection, doc, getDoc, getDocs, where, query } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    where,
+    query,
+} from "firebase/firestore";
 import { db } from "./config";
 
 /*
@@ -13,8 +20,6 @@ export async function getAllCarsFromDB() {
     const querySnapshot = await getDocs(collection(db, "cars"));
 
     querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-
         const post = {
             ...doc.data(),
             id: doc.id,
@@ -79,7 +84,7 @@ export async function getUserIdFromAuth(authId) {
             return null;
         }
     } catch (error) {
-        console.error("Error fetching user document ID:", error.message);
+        console.log("Error fetching user document ID:", error.message);
         return null;
     }
 }
