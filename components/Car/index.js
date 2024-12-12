@@ -45,7 +45,7 @@ export default function Car({
             setLocalCarInGarage(searchGarage(id));
         }, [id, garageCars])
     );
-    
+
     const searchGarage = (carToFindId) => {
         return garageCars.some((currCar) => currCar.id === carToFindId);
     };
@@ -63,7 +63,7 @@ export default function Car({
             setCurrentCar(pressedCar);
             navigation.navigate("CarDetail");
         } else if (inGarageMode) {
-           handleRemoveCarFromGarage();
+            handleRemoveCarFromGarage();
         }
     };
 
@@ -114,28 +114,33 @@ export default function Car({
 
     return (
         <Pressable style={styles.card} onPress={handleCarPress}>
-            <Image source={{ uri: image }} style={styles.image} />
-            <View style={styles.details}>
-                <Text style={styles.title}>{`${brand} ${model} '${year}`}</Text>
-                <View style={styles.chipContainer}>
-                    {localCarInGarage && (
-                        <MaterialCommunityIcons
-                            name="garage"
-                            size={24}
-                            color="green"
-                        />
+            <View>
+                <Image source={{ uri: image }} style={styles.image} />
+                <View style={styles.iconContainer}>
+                    {isLimitedStock && (
+                        <View style={styles.limitedStockContainer}>
+                            <Icon name="warning" size={20} color="red" />
+                        </View>
                     )}
+                    {localCarInGarage && (
+                        <View style={styles.limitedStockContainer}>
+                            <MaterialCommunityIcons
+                                name="garage"
+                                size={24}
+                                color="green"
+                            />
+                        </View>
+                    )}
+                </View>
+            </View>
+
+            <View style={styles.details}>
+                <Text style={styles.title}>{`${brand}`}</Text>
+                <Text style={styles.title}>{`${model} ${year}`}</Text>
+                <View style={styles.chipContainer}>
                     <Text style={styles.chip}>{`PP ${pp}`}</Text>
                     <Text style={styles.drivetrain}>{drivetrain}</Text>
                 </View>
-                {isLimitedStock && (
-                    <View style={styles.limitedStockContainer}>
-                        <Icon name="warning" size={20} color="red" />
-                        <Text style={styles.limitedStockText}>
-                            Limited Stock
-                        </Text>
-                    </View>
-                )}
                 <View style={styles.creditContainer}>
                     <Text style={styles.creditLabel}>Cr. </Text>
                     <Text style={styles.credit}>{credit}</Text>

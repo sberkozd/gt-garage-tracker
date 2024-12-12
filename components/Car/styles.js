@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 8,
   },
+  iconContainer: {
+    flexDirection: 'row',
+  },
   details: {
     flex: 1,
     marginLeft: 10,
