@@ -1,7 +1,7 @@
 // React imports
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 // Third party imports
 import { signOut } from "firebase/auth";
@@ -20,6 +20,9 @@ export default function GarageSummaryScreen() {
     const { setIsAuthenticated, setAuthId } = useContext(AuthContext);
     const { garageCars } = useContext(CarContext);
     const [totalAvailableCars, setTotalAvailableCars] = useState(0);
+    const [mostExpensiveCar, setMostExpensiveCar] = useState(null);
+    const [totalGarageValue, setTotalGarageValue] = useState(0);
+    const [limitedStockCars, setLimitedStockCars] = useState(0);
 
     /* Side effects */
     useEffect(() => {
@@ -49,6 +52,25 @@ export default function GarageSummaryScreen() {
 
         fetchTotalAvailableCars();
     }, [navigation]);
+    
+    useEffect(() => {
+        console.log("Garage Cars:", garageCars);
+    
+        if (garageCars.length > 0) {
+            garageCars.forEach(car => console.log(`Car: ${car.brand} ${car.model}, Credit: ${car.credit}`));
+            const expensiveCar = garageCars.reduce((prev, current) => {
+                return (parseInt(prev.credit, 10) > parseInt(current.credit, 10)) ? prev : current;
+            });
+            console.log(`Most Expensive Car: ${expensiveCar.brand} ${expensiveCar.model}, Credit: ${expensiveCar.credit}`);
+            setMostExpensiveCar(expensiveCar);
+    
+            const totalValue = garageCars.reduce((sum, car) => sum + parseInt(car.credit, 10), 0);
+            setTotalGarageValue(totalValue.toString());
+    
+            const limitedStockCount = garageCars.filter(car => car.isLimitedStock).length;
+            setLimitedStockCars(limitedStockCount);
+        }
+    }, [garageCars]);
 
     /* Handlers */
     const handleLogout = () => {
@@ -78,11 +100,40 @@ export default function GarageSummaryScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.boldText}>
+            <Text style={[styles.boldText, styles.headerText]}>
                 Collected Cars: {garageCars.length} / {totalAvailableCars}
             </Text>
-            <Progress.Bar progress={progress} width={300} height={20} color={color} />
-            <Text style={styles.collectorLevelText}>Collector Level: {text}</Text>
-        </View>
-    );
-}
+            <Progress.Bar 
+                progress={progress} 
+                width={300} 
+                height={20} 
+                color={color} 
+                style={styles.progressBar} 
+                />
+                <Text style={styles.collectorLevelText}>
+                    Collector Level: {text}
+                </Text>
+                {mostExpensiveCar && (
+                    <View style={styles.expensiveCarContainer}>
+                        <Text style={styles.boldText}>Most Expensive Car</Text>
+                        <Image 
+                            source={{ uri: mostExpensiveCar.image }} 
+                            style={styles.carImage} 
+                        />
+                        <Text style={styles.expensiveCarText}>
+                            {mostExpensiveCar.brand} {mostExpensiveCar.model}, Credit: {mostExpensiveCar.credit}
+                        </Text>
+                    </View>
+                )}
+                <Text style={[styles.boldText, styles.totalGarageValueText]}>
+                    Total Garage Value: {totalGarageValue} Credits
+                </Text>
+                <View style={styles.limitedStockContainer}>
+                    <MaterialCommunityIcons name="alert" size={20} color="red" />
+                    <Text style={[styles.boldText, styles.limitedStockText]}>
+                        Limited Stock cars owned: {limitedStockCars}
+                    </Text>
+                </View>
+            </View>
+        );
+    }
