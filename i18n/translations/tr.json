@@ -2,135 +2,136 @@
     "common": {
 
         "nav": {
-            "cars": "Cars",
-            "garage": "Garage",
-            "GarageSummary": "Garage Summary",
-            "settings": "Settings"
+            "cars": "Araçlar",
+            "garage": "Garaj",
+            "GarageSummary": "Garajim",
+            "settings": "Ayarlar"
         },
 
-        "loading": "Loading...",
-        "save": "Save",
-        "confirm": "Confirm",
-        "cancel": "Cancel",
-        "accept": "Accept",
-        "clear": "Clear",
-        "close": "Close",
-        "saveSuccess": "Changes saved successfully!",
-        "notApplicable": "N/A",
-        "enabled": "Enabled",
-        "disabled": "Disabled",
-        "add": "Add",
-        "remove": "Remove",
-        "confirmChanges": "Confirm Changes"
+        "loading": "Yükleniyor...",
+        "save": "Kaydet",
+        "confirm": "Onayla",
+        "cancel": "İptal et",
+        "accept": "Kabul et",
+        "clear": "Temizle",
+        "close": "Kapat",
+        "saveSuccess": "Başarıyla kaydedildi!",
+        "notApplicable": "Geçersiz",
+        "enabled": "Etkin",
+        "disabled": "Devre dışı",
+        "add": "Ekle",
+        "remove": "Kaldır",
+        "confirmChanges": "Değişiklikleri onayla"
     },
 
     "screens": {
         "cars": {
-            "title": "Available Cars",
-            "noCars": "No cars available."
+            "title": "Araçlar",
+            "noCars": "Araç bulunamadı."
         },
 
         "carDetails": {
-            "limitedStock": "Limited Stock",
-            "manyStock": "Many In Stock",
-            "manufacturer": "Manufacturer",
+            "limitedStock": "Sınırlı Stok",
+            "manyStock": "Çok stok mevcut",
+            "manufacturer": "Üretici",
             "model": "Model",
-            "year": "Year",
+            "year": "Yıl",
             "pp": "PP",
-            "drivetrain": "Drivetrain",
-            "alreadyInGarage": "ALREADY IN GARAGE",
-            "addToGarage": "ADD TO GARAGE",
-            "infoTitle": "Car Details",
-            "infoText1": "On this screen, you can tap the car item in order to view more details about it.",
-            "infoText2": "If the car is not already in your garage, you can also add it from this screen."
+            "drivetrain": "Şanzıman",
+            "alreadyInGarage": "Garajda mevcut",
+            "addToGarage": "Garaja ekle",
+            "infoTitle": "Araç detayları",
+            "infoText1": "Bu ekranda, aracın üstüne tıklayıp daha fazla detaya ulaşabilirsiniz.",
+            "infoText2": "Eğer araç garajınızda mevcut değil ise, bu ekrandan garajınıza ekleyebilirsiniz."
         },
 
         "garage": {
-            "title": "Garage",
-            "infoTitle": "Managing Your Garage",
-            "infoText": "To remove a car from your garage, simply tap the car you would like to remove.",
-            "greeting": "Hi {{nickname}}!",
-            "greeting2": "Welcome!"
+            "title": "Garaj",
+            "infoTitle": "Garajı kontrol et",
+            "infoText": "Garajınızdan bir aracı kaldırmak için herhangi bir aracın üstüne tıklayıp kaldırabilirsiniz.",
+            "greeting": "Merhaba {{nickname}}!",
+            "greeting2": "Hoşgeldin!"
         },
 
         "garageSummary": {
-            "title": "Garage Summary",
-            "platinum": "Platinum",
-            "purple": "Purple",
-            "gold": "Gold",
-            "silver": "Silver",
-            "bronze": "Bronze",
-            "rookie": "Rookie",
-            "level": "Collector Level: {{text}}",
-            "mostExpensive": "Most Expensive Car",
-            "credit": "Credit",
-            "totalValue": "Total Garage Value: {{garageValue}} Credits",
-            "limitedCarsOwned": "Limited Stock Cars Owned: {{limitedOwned}}"
+            "title": "Garaj Özeti",
+            "platinum": "Platin",
+            "purple": "Mor",
+            "gold": "Altın",
+            "silver": "Gümüş",
+            "bronze": "Bronz",
+            "rookie": "Acemi",
+            "level": "Koleksiyoncu Seviyesi {{text}}",
+            "mostExpensive": "En pahalı araç",
+            "credit": "Kredi",
+            "totalValue": "Toplam Garaj Değeri: {{garageValue}} Kredi",
+            "limitedCarsOwned": "Limitli sayıdaki araçlar: {{limitedOwned}}"
         },
 
         "settings": {
-            "settings": "Settings",
-            "account": "ACCOUNT",
-            "preferences": "PREFERENCES",
-            "language": "Language",
-            "selectLanguage": "Select Language",
+            "settings": "Ayarlar",
+            "account": "HESABIM",
+            "preferences": "TERCİHLER",
+            "language": "Dil",
+            "selectLanguage": "Dil Seçin",
             "email": "email",
             "emailCaps": "EMAIL",
-            "contact": "Contact Us",
-            "reportBug": "Report Bug",
-            "logout": "LOG OUT",
-            "delete": "DELETE ACCOUNT",
-            "footer": "v1.0.0 Beta\n\nAggrey Nhiwatiwa, Samet Berk Ozdemir\n\n© Copyright 2024",
+            "contact": "Bize Ulaşın",
+            "reportBug": "Hata Bildir",
+            "logout": "Çıkış Yap",
+            "delete": "Hesabı Sil",
+            "footer": "v1.0.0 Beta\n\nAggrey Nhiwatiwa, Samet Berk Ozdemir\n\n© Tüm hakları saklıdır 2024",
 
             "emailText": {
-                "subjectGeneral": "[GT Garage Tracker App] General query",
-                "bodyGeneral": "Hi!,\n\nI just wanted to send an email about your GT Garage Tracker app.\n\nThanks,\n{{nickname}}",
+                "subjectGeneral": "[GT Garage Tracker App] Geri Bildirim",
+                "bodyGeneral": "Merhaba!,\n\n GT Tracker hakkında bir email göndermek istedim. \n\nTeşekkürler,\n{{nickname}}",
                 "subjectBug": "[GT Garage Tracker App] Bug found!",
-                "bodyBug": "Hi!,\n\nI just wanted to send you guys an email about a bug we found in your GT Garage Tracker app.\n\nThe steps to reproduce this bug are as follows:\n\nApp version: v1.0.0 beta\n\nVersion of Android/iOS:\n\nThanks,\n{{nickname}}"
+                "bodyBug": "Merhaba!,\n\nGT Garage Tracker App uygulamanızda bulduğumuz bir hata hakkında size bir e-posta göndermek istedim.\n\nBu hatayı düzeltmek için adımlar şunlardır:\n\nUygulama sürümü: v1.0.0 beta\n\nAndroid/iOS sürümü:\n\nTeşekkürler,\n{{nickname}}"
+                
             }
         }
     },
 
     "components": {
         "filter": {
-            "title": "Filter Options",
-            "limitedStock": "Show Limited Stock Only",
-            "ppRange": "Select PP Range",
-            "creditRange": "Select Credit Range",
-            "apply": "Apply",
-            "reset": "Reset Filters"
+            "title": "Filtre Seçenekleri",
+            "limitedStock": "Sadece sınırlı stok göster",
+            "ppRange": "PP Aralığı seç",
+            "creditRange": "Kredi Aralığı seç",
+            "apply": "Uygula",
+            "reset": "Filtreyi sıfırla"
         }
     },
 
     "loginScreen": {
         "email": "Email",
-        "password": "Password",
+        "password": "Şifre",
 
-        "login": "Login",
-        "forgotPassword": "Forgot password",
+        "login": "Giriş Yap",
+        "forgotPassword": "Şifremi Unuttum",
 
-        "success": "Success {{icon}}",
-        "error": "Error {{icon}}",
+        "success": "Başarılı {{icon}}",
+        "error": "Hata {{icon}}",
 
-        "sendPasswordReset": "Reset Password",
-        "passwordResetSuccess": "Password reset email sent!",
+        "sendPasswordReset": "Şifre sıfırlama e-postası gönder",
+        "passwordResetSuccess": "Şifre sıfırlama e-postası başarıyla gönderildi.",
 
-        "logOut": "Log Out",
-        "logOutConfirm": "Are you sure you wish to log out?"
+        "logOut": "Çıkış Yap",
+        "logOutConfirm": "Çıkış yapmak istediğinize emin misiniz?"
     },
 
     "errors": {
-        "generic": "Something went wrong, try again later.",
-        "requestFailed": "Network request failed.",
-        "unexpected": "Unexpected error encountered.",
-        "error": "Error",
+        "generic": "Bir şeyler ters gitti, bir daha deneyin.",
+        "requestFailed": "İstek başarısız oldu.",
+        "unexpected": "Beklenmeyen bir hata oluştu.",
+        "error": "Hata",
 
         "login": {
-            "signOut": "Error signing out.",
-            "invalidEmail": "Please enter a valid email.",
-            "noPassword": "Password is required.",
-            "invalidCredentials": "Invalid email or password.",
-            "userDisabled": "Account disabled. Please contact your administrator."
+            "signOut": "Çıkış yaparken bir hata oluştu.",
+            "invalidEmail": "Geçersiz email adresi.",
+            "noPassword": "Şifre alanı boş olamaz.",
+            "invalidCredentials": "Geçersiz email ya da şifre",
+            "userDisabled": "Hesap devre dışı. Lütfen destek ekibimizle iletişime geçin."
         }
     }
 }
