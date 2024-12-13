@@ -23,6 +23,7 @@ import styles from "./styles";
 import { CarContext } from "../../context/CarContext";
 import { AuthContext } from "../../context/AuthContext";
 import * as database from "../../database";
+import i18next from "i18next";
 
 export default function CarDetailScreen() {
     /* State */
@@ -190,14 +191,14 @@ export default function CarDetailScreen() {
                         },
                     ]}
                 >
-                    {currentCar.isLimitedStock ? "Limited Stock" : " Many In Stock"}
+                    {currentCar.isLimitedStock ? i18next.t("screens.carDetails.limitedStock") : i18next.t("screens.carDetails.manyStock")}
                 </Text>
             </View>
 
             <DataTable>
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>Manufacturer:</Text>
+                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.manufacturer")}:</Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.brand}</Text>
@@ -206,7 +207,7 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>Model:</Text>
+                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.model")}:</Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.model}</Text>
@@ -215,7 +216,7 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>Year:</Text>
+                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.year")}:</Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.year}</Text>
@@ -224,7 +225,7 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>PP:</Text>
+                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.pp")}:</Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.pp}</Text>
@@ -233,7 +234,7 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>Drivetrain:</Text>
+                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.drivetrain")}:</Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>
@@ -254,7 +255,7 @@ export default function CarDetailScreen() {
                         carInGarage && styles.disabledButtonText,
                     ]}
                 >
-                    {carInGarage ? "ALREADY IN GARAGE" : "ADD TO GARAGE"}
+                    {carInGarage ? i18next.t("screens.carDetails.alreadyInGarage") : i18next.t("screens.carDetails.addToGarage")}
                 </Text>
             </Pressable>
 
@@ -263,15 +264,9 @@ export default function CarDetailScreen() {
                     <View style={styles.overlay}>
                         <TouchableWithoutFeedback>
                             <View style={styles.dialog}>
-                                <Text style={styles.heading}>Car Details</Text>
-                                <Text style={styles.dialogText}>
-                                    On this screen, you can tap the car image in
-                                    order to view more details about it.
-                                </Text>
-                                <Text style={styles.dialogText}>
-                                    If the car is not already in your garage,
-                                    you can also remove it from this screen.
-                                </Text>
+                                <Text style={styles.heading}>{i18next.t("screens.carDetails.infoTitle")}</Text>
+                                <Text style={styles.dialogText}>{i18next.t("screens.carDetails.infoText1")}</Text>
+                                <Text style={styles.dialogText}>{i18next.t("screens.carDetails.infoText2")}</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>

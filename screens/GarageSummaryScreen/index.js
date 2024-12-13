@@ -14,6 +14,7 @@ import { CarContext } from "../../context/CarContext";
 import { getAllCarsFromDB } from "../../database/read";
 import { auth } from "../../database/config";
 import styles from "./styles";
+import i18next from "i18next";
 
 export default function GarageSummaryScreen() {
     const navigation = useNavigation();
@@ -88,12 +89,12 @@ export default function GarageSummaryScreen() {
     const progress = totalAvailableCars > 0 ? garageCars.length / totalAvailableCars : 0;
 
     const getProgressColor = (progress) => {
-        if (progress >= 1) return { color: '#E5E4E2', text: 'Platinum' };
-        if (progress >= 0.8) return { color: '#800080', text: 'Purple' };
-        if (progress >= 0.5) return { color: '#FFD700', text: 'Gold' };
-        if (progress >= 0.3) return { color: '#C0C0C0', text: 'Silver' };
-        if (progress >= 0.1) return { color: '#CD7F32', text: 'Bronze' }; 
-        return { color: 'gray', text: 'Rookie' };
+        if (progress >= 1) return { color: '#E5E4E2', text: i18next.t("screens.garageSummary.platinum") };
+        if (progress >= 0.8) return { color: '#800080', text: i18next.t("screens.garageSummary.purple") };
+        if (progress >= 0.5) return { color: '#FFD700', text: i18next.t("screens.garageSummary.gold") };
+        if (progress >= 0.3) return { color: '#C0C0C0', text: i18next.t("screens.garageSummary.silver") };
+        if (progress >= 0.1) return { color: '#CD7F32', text: i18next.t("screens.garageSummary.bronze") }; 
+        return { color: 'gray', text: i18next.t("screens.garageSummary.") };
     };
 
     const { color, text } = getProgressColor(progress);
@@ -110,28 +111,26 @@ export default function GarageSummaryScreen() {
                 color={color} 
                 style={styles.progressBar} 
                 />
-                <Text style={styles.collectorLevelText}>
-                    Collector Level: {text}
-                </Text>
+                <Text style={styles.collectorLevelText}>{i18next.t("screens.garageSummary.level", {text: text})}</Text>
                 {mostExpensiveCar && (
                     <View style={styles.expensiveCarContainer}>
-                        <Text style={styles.boldText}>Most Expensive Car</Text>
+                        <Text style={styles.boldText}>{i18next.t("screens.garageSummary.mostExpensive")}</Text>
                         <Image 
                             source={{ uri: mostExpensiveCar.image }} 
                             style={styles.carImage} 
                         />
                         <Text style={styles.expensiveCarText}>
-                            {mostExpensiveCar.brand} {mostExpensiveCar.model}, Credit: {mostExpensiveCar.credit}
+                            {mostExpensiveCar.brand} {mostExpensiveCar.model}, {i18next.t("screens.garageSummary.credit")}: {mostExpensiveCar.credit}
                         </Text>
                     </View>
                 )}
                 <Text style={[styles.boldText, styles.totalGarageValueText]}>
-                    Total Garage Value: {totalGarageValue} Credits
+                {i18next.t("screens.garageSummary.totalValue", {garageValue: totalGarageValue})}
                 </Text>
                 <View style={styles.limitedStockContainer}>
                     <MaterialCommunityIcons name="alert" size={20} color="red" />
                     <Text style={[styles.boldText, styles.limitedStockText]}>
-                        Limited Stock cars owned: {limitedStockCars}
+                    {i18next.t("screens.garageSummary.limitedCarsOwned", {limitedOwned: limitedStockCars})}
                     </Text>
                 </View>
             </View>

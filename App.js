@@ -18,6 +18,11 @@ import GarageSummaryScreen from "./screens/GarageSummaryScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SplashScreen from "./components/SplashScreen";
+import * as Font from "expo-font";
+
+// Localisation
+import i18next from "i18next";
+import { initI18next } from "./i18n/i18n";
 
 const Tab = createBottomTabNavigator();
 
@@ -35,8 +40,38 @@ export default function App() {
     const [authId, setAuthId] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [loadingTranslations, setLoadingTranslations] = useState(true);
+    const [loadingFonts, setLoadingFonts] = useState(true);
 
     /* Side effects */
+
+    // Loading fonts
+    useEffect(() => {
+        const loadFonts = async () => {
+            try {
+                await Font.loadAsync({
+                    ...MaterialCommunityIcons.font,
+                });
+                setLoadingFonts(false);
+            } catch (error) {
+                console.log("Error loading fonts:", error);
+            }
+        };
+        loadFonts();
+    }, []);
+
+    //Loading translation
+    useEffect(() => {
+        async function initTranslation() {
+            try {
+                await initI18next();
+                setLoadingTranslations(false);
+            } catch (error) {
+                console.error("Error initialising i18n:", error);
+            }
+        }
+        initTranslation();
+    }, []);
 
     /*
     Use effect for auth persistence.
@@ -55,12 +90,9 @@ export default function App() {
             } else {
                 setAuthId(null);
                 setIsAuthenticated(false);
+                setCurrentUser(null);
+                auth.signOut();
             }
-            const timer = setTimeout(() => {
-                setLoading(false);
-            }, 1000);
-
-            return () => clearTimeout(timer);
         });
 
         return unsubscribe;
@@ -86,7 +118,6 @@ export default function App() {
                     }));
                     setCars(dbCars);
 
-                    
                     const userId = await database.getUserIdFromAuth(authId);
 
                     // Getting user object from db
@@ -97,6 +128,7 @@ export default function App() {
                     const initialGarageCars =
                         await database.getGarageCarsFromDB(userId);
                     setGarageCars(initialGarageCars);
+                    setLoading(false);
                 } catch (error) {
                     console.log(
                         "Error when trying to read from the db:",
@@ -108,7 +140,7 @@ export default function App() {
         }
     }, [authId]);
 
-    if (loading) {
+    if (loading || loadingTranslations) {
         return <SplashScreen></SplashScreen>;
     }
 
@@ -122,6 +154,8 @@ export default function App() {
                     setAuthId,
                     currentUser,
                     setCurrentUser,
+                    loading,
+                    setLoading,
                 }}
             >
                 <CarContext.Provider
@@ -155,6 +189,8 @@ export default function App() {
                                                 size={30}
                                             />
                                         ),
+                                        tabBarLabel:
+                                            i18next.t("common.nav.cars"),
                                     }}
                                 />
                                 <Tab.Screen
@@ -168,6 +204,8 @@ export default function App() {
                                                 size={30}
                                             />
                                         ),
+                                        tabBarLabel:
+                                            i18next.t("common.nav.garage"),
                                     }}
                                 />
                                 <Tab.Screen
@@ -181,6 +219,9 @@ export default function App() {
                                                 size={30}
                                             />
                                         ),
+                                        tabBarLabel: i18next.t(
+                                            "common.nav.GarageSummary"
+                                        ),
                                     }}
                                 />
                                 <Tab.Screen
@@ -193,6 +234,9 @@ export default function App() {
                                                 color={color}
                                                 size={30}
                                             />
+                                        ),
+                                        tabBarLabel: i18next.t(
+                                            "common.nav.settings"
                                         ),
                                     }}
                                 />

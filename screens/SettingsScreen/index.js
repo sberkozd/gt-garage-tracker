@@ -3,18 +3,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
     Alert,
+    Modal,
     Linking,
     SafeAreaView,
     ScrollView,
     View,
     Text,
     TouchableOpacity,
-    Switch,
+    TouchableWithoutFeedback,
 } from "react-native";
 
 // Third party imports
 import { signOut } from "firebase/auth";
 import LottieView from "lottie-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Picker } from "@react-native-picker/picker";
 
 // Project imports
 import { AuthContext } from "../../context/AuthContext";
@@ -23,13 +26,52 @@ import { getAllCarsFromDB } from "../../database/read";
 import { auth } from "../../database/config";
 import styles from "./styles";
 
+//Languages
+import { currentLngKey, supportedLanguages } from "../../i18n/i18n";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+
 /*
 The UI styling and structure of this page is largely based on: https://withfra.me/components/settings
 For the email Linking, the Linking API is used: https://reactnative.dev/docs/0.70/linking
 */
 export default function SettingsScreen() {
-    const [darkMode, setDarkMode] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const { currentUser } = useContext(AuthContext);
+    const { t, i18n } = useTranslation();
+    const [languages] = useState(getLanguagesList());
+    const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+
+    /* Side effects */
+
+    /*
+    Language selection state management
+    */
+    useEffect(() => {
+        const loadLanguage = async () => {
+            const storedLanguage = await AsyncStorage.getItem(currentLngKey);
+            if (storedLanguage) {
+                setSelectedLanguage(storedLanguage);
+                i18n.changeLanguage(storedLanguage);
+            }
+        };
+        loadLanguage();
+    }, []);
+
+    const onLanguageChange = (value) => {
+        setSelectedLanguage(value); 
+    };
+
+    const handleConfirmLanguage = async () => {
+        try {
+            await AsyncStorage.setItem(currentLngKey, selectedLanguage);
+            i18n.changeLanguage(selectedLanguage); 
+            setShowModal(false); 
+        } catch (error) {
+            console.log("Error saving language selection:", error);
+        }
+    };
+
 
     const openEmailApp = (emailPurpose) => {
         let recipients = "";
@@ -39,23 +81,16 @@ export default function SettingsScreen() {
 
         if (emailPurpose === "contact") {
             recipients = ["developer1@a.com", "developer2@a.com"];
-            subject = "[GT Garage Tracker App] General query";
-            body =
-                "Hello,\n\nI just wanted to send an email about your GT Garage Tracker app.";
+            subject = i18next.t("screens.settings.emailText.subjectGeneral");
+            body = i18next.t("screens.settings.emailText.bodyGeneral", {nickname: currentUser.nickname});
 
             url = `mailto:${recipients.join(",")}?subject=${encodeURIComponent(
                 subject
             )}&body=${encodeURIComponent(body)}`;
         } else if (emailPurpose === "bug") {
             recipients = ["developer1@a.com", "developer2@a.com"];
-            subject = "[GT Garage Tracker App] Bug found!";
-            body = `Hi!,
-            \n\nI just wanted to send you guys an email about a bug we found in your GT Garage Tracker app.
-            \n\n The steps to reproduce this bug are as follows:
-            \n\n App version: v1.0.0 beta
-            \n\n Version of Android/iOS:
-            \n\n Thanks,
-            \n ${currentUser.nickname}`;
+            subject = i18next.t("screens.settings.emailText.subjectBug");
+            body = i18next.t("screens.settings.emailText.bodyBug", {nickname: currentUser.nickname});
 
             url = `mailto:${recipients.join(",")}?subject=${encodeURIComponent(
                 subject
@@ -83,47 +118,32 @@ export default function SettingsScreen() {
             });
     };
 
-    const handleOpenContactEmail = () => {
+    /* Handlers */
+    const handleShowModal = () => {
+        setShowModal(true);
+    };
 
+    const handleHideModal = () => {
+        setShowModal(false);
+    };
+
+    const handleOpenContactEmail = () => {
         openEmailApp("contact");
     };
 
     const handleOpenBugEmail = () => {
-
         openEmailApp("bug");
     };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
-            <View style={styles.header}>
-                <View style={styles.headerAction}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                    >
-                    </TouchableOpacity>
-                </View>
-                <Text numberOfLines={1} style={styles.headerTitle}></Text>
-                <View style={[styles.headerAction, { alignItems: "flex-end" }]}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            // handle onPress
-                        }}
-                    >
-                    </TouchableOpacity>
-                </View>
-            </View>
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={[styles.section, { paddingTop: 4 }]}>
-                    <Text style={styles.sectionTitle}>Account</Text>
+                    <Text style={styles.sectionTitle}>
+                        {i18next.t("screens.settings.account")}
+                    </Text>
                     <View style={styles.sectionBody}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                // handle onPress
-                            }}
-                            style={styles.profile}
-                        >
+                        <View style={styles.profile}>
                             <LottieView
                                 autoPlay
                                 loop
@@ -138,55 +158,45 @@ export default function SettingsScreen() {
                                     {currentUser.email}
                                 </Text>
                             </View>
-                        </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Preferences</Text>
+                    <Text style={styles.sectionTitle}>
+                        {i18next.t("screens.settings.preferences")}
+                    </Text>
                     <View style={styles.sectionBody}>
                         <View style={[styles.rowWrapper, styles.rowFirst]}>
                             <TouchableOpacity
                                 onPress={() => {
-                                    // handle onPress
+                                    setShowModal(true);
                                 }}
                                 style={styles.row}
                             >
-                                <Text style={styles.rowLabel}>Language</Text>
-                                <View style={styles.rowSpacer} />
-                                <Text style={styles.rowValue}>English</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={[styles.rowWrapper, styles.rowLast]}>
-                            <View style={styles.row}>
                                 <Text style={styles.rowLabel}>
-                                    Dark Mode
+                                    {i18next.t("screens.settings.language")}
                                 </Text>
                                 <View style={styles.rowSpacer} />
-                                <Switch
-                                    onValueChange={(newValue) =>
-                                        setDarkMode(newValue)
-                                    }
-                                    style={{
-                                        transform: [
-                                            { scaleX: 0.95 },
-                                            { scaleY: 0.95 },
-                                        ],
-                                    }}
-                                   value={darkMode}
-                                />
-                            </View>
+                                <Text style={styles.rowValue}>
+                                    {selectedLanguage}
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Email</Text>
+                    <Text style={styles.sectionTitle}>
+                        {i18next.t("screens.settings.email")}
+                    </Text>
                     <View style={styles.sectionBody}>
                         <View style={[styles.rowWrapper, styles.rowFirst]}>
                             <TouchableOpacity
                                 onPress={handleOpenContactEmail}
                                 style={styles.row}
                             >
-                                <Text style={styles.rowLabel}>Contact Us</Text>
+                                <Text style={styles.rowLabel}>
+                                    {i18next.t("screens.settings.contact")}
+                                </Text>
                                 <View style={styles.rowSpacer} />
                             </TouchableOpacity>
                         </View>
@@ -195,7 +205,9 @@ export default function SettingsScreen() {
                                 onPress={handleOpenBugEmail}
                                 style={styles.row}
                             >
-                                <Text style={styles.rowLabel}>Report Bug</Text>
+                                <Text style={styles.rowLabel}>
+                                    {i18next.t("screens.settings.reportBug")}
+                                </Text>
                                 <View style={styles.rowSpacer} />
                             </TouchableOpacity>
                         </View>
@@ -223,7 +235,7 @@ export default function SettingsScreen() {
                                         styles.rowLabelLogout,
                                     ]}
                                 >
-                                    Log Out
+                                    {i18next.t("screens.settings.logout")}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -252,18 +264,67 @@ export default function SettingsScreen() {
                                         styles.rowLabelLogout,
                                     ]}
                                 >
-                                    DELETE ACCOUNT
+                                    {i18next.t("screens.settings.delete")}
                                 </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
                 <Text style={styles.contentFooter}>
-                    {`v1.0.0 Beta
-                    \n\nAggrey Nhiwatiwa, Samet Berk Ozdemir 
-                    \n\n© Copyright 2024`}
+                    {i18next.t("screens.settings.footer")}
                 </Text>
             </ScrollView>
+
+            <Modal visible={showModal} transparent={true} animationType="slide">
+                <TouchableWithoutFeedback onPress={handleHideModal}>
+                    <View style={styles.overlay}>
+                        <TouchableWithoutFeedback>
+                            <View style={styles.dialog}>
+                                <Text style={styles.title}>
+                                    {i18next.t(
+                                        "screens.settings.selectLanguage"
+                                    )}
+                                </Text>
+                                <View style={styles.pickerContainer}>
+                                    <Picker
+                                        selectedValue={selectedLanguage}
+                                        onValueChange={onLanguageChange}
+                                    >
+                                        {languages.map((lang) => (
+                                            <Picker.Item
+                                                key={lang.label}
+                                                label={lang.label}
+                                                value={lang.value}
+                                            />
+                                        ))}
+                                    </Picker>
+                                </View>
+                                <TouchableOpacity
+                                    style={styles.applyButton}
+                                    onPress={handleConfirmLanguage}
+                                >
+                                    <Text style={styles.buttonText}>
+                                        {i18next.t("components.filter.apply")}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
         </SafeAreaView>
     );
+}
+
+function getLanguagesList() {
+    const data = [];
+
+    for (let key in supportedLanguages) {
+        data.push({
+            label: `${supportedLanguages[key]} (${key})`,
+            value: key,
+        });
+    }
+
+    return data;
 }

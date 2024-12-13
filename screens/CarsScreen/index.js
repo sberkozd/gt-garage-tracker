@@ -8,6 +8,9 @@ import { CarContext } from "../../context/CarContext";
 import Car from "../../components/Car";
 import styles from "./styles";
 
+// Languages
+import i18next from "i18next";
+
 export default function CarsScreen({ filters }) {
     const { cars, setInCarAddMode, setInGarageMode } = useContext(CarContext);
 
@@ -52,7 +55,7 @@ export default function CarsScreen({ filters }) {
     if (filteredCars.length === 0) {
         return (
             <View style={styles.noCarsContainer}>
-                <Text style={styles.noCarsText}>No cars available</Text>
+                <Text style={styles.noCarsText}>{i18next.t("screens.cars.noCars")}</Text>
             </View>
         );
     }

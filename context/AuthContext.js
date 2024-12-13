@@ -7,4 +7,6 @@ export const AuthContext = createContext({
   setAuthId: () => {},
   currentUser: {},
   setCurrentUser: () => {},
+  loading: false,
+  setLoading: () => {},
 });

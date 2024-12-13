@@ -11,6 +11,9 @@ import CarsScreen from "../../screens/CarsScreen";
 import CarDetailScreen from "../../screens/CarDetailScreen";
 import CarFilterDialog from "../dialog/CarFilterDialog";
 
+// Language
+import i18next from "i18next";
+
 const CarsStack = createStackNavigator();
 
 export default function CarsStackNavigator() {
@@ -34,7 +37,7 @@ export default function CarsStackNavigator() {
         <CarsStack.Screen
           name="CarsList"
           options={{
-            headerTitle: "Available Cars",
+            headerTitle: i18next.t("screens.cars.title"),
             headerRight: () => (
               <Icon
                 name="filter"

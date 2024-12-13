@@ -7,6 +7,7 @@ import { Picker } from "@react-native-picker/picker";
 
 // In-project imports
 import styles from "./styles";
+import i18next from "i18next";
 
 export default function CarFilterDialog({
     visible,
@@ -62,16 +63,16 @@ export default function CarFilterDialog({
         <View style={styles.overlay}>
           <TouchableWithoutFeedback>
             <View style={styles.dialog}>
-              <Text style={styles.title}>Filter Options</Text>
+              <Text style={styles.title}>{i18next.t("components.filter.title")}</Text>
               <View style={styles.switchContainer}>
                 <Switch
                   value={localLimitedStock}
                   onValueChange={setLocalLimitedStock}
                 />
-                <Text style={styles.switchLabel}>Show Limited Stock only</Text>
+                <Text style={styles.switchLabel}>{i18next.t("components.filter.limitedStock")}</Text>
               </View>
               <View style={styles.pickerContainer}>
-                <Text style={styles.pickerLabel}>Select PP Range</Text>
+                <Text style={styles.pickerLabel}>{i18next.t("components.filter.ppRange")}</Text>
                 <Picker
                   selectedValue={selectedPpRange}
                   onValueChange={(itemValue) =>
@@ -91,7 +92,7 @@ export default function CarFilterDialog({
                 </Picker>
               </View>
               <View style={styles.pickerContainer}>
-                <Text style={styles.pickerLabel}>Select Credit Range</Text>
+                <Text style={styles.pickerLabel}>{i18next.t("components.filter.creditRange")}</Text>
                 <Picker
                   selectedValue={selectedCreditRange}
                   onValueChange={(itemValue) =>
@@ -111,13 +112,13 @@ export default function CarFilterDialog({
                 style={styles.applyButton}
                 onPress={handleApply}
               >
-                <Text style={styles.buttonText}>Apply</Text>
+                <Text style={styles.buttonText}>{i18next.t("components.filter.apply")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.resetButton}
                 onPress={resetFilters}
               >
-                <Text style={styles.buttonText}>Reset Filters</Text>
+                <Text style={styles.buttonText}>{i18next.t("components.filter.resetFilters")}</Text>
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>

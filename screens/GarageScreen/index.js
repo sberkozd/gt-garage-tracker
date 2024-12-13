@@ -28,10 +28,15 @@ import { AuthContext } from "../../context/AuthContext";
 import { CarContext } from "../../context/CarContext";
 import Car from "../../components/Car";
 import CarFilterDialog from "../../components/dialog/CarFilterDialog";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+import SplashScreen from "../../components/SplashScreen";
+import * as database from "../../database";
 
 export default function GarageScreen() {
     /* State */
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, setCurrentUser, loading, authId } =
+        useContext(AuthContext);
     const { garageCars, setInCarAddMode, setInGarageMode } =
         useContext(CarContext);
     const navigation = useNavigation();
@@ -44,11 +49,26 @@ export default function GarageScreen() {
     });
 
     const [activeModal, setActiveModal] = useState("loading");
+    const { t } = useTranslation();
 
     // Custom slide animation that starts on the centre of the screen (value 0)
     const garageSlideAnimation = useRef(new Animated.Value(0)).current;
 
     /* Side effects */
+
+    //In case user hasn't been updated from App.js
+    useEffect(() => {
+        async function getUser() {
+            async function fetchAndSetUser() {
+                const userId = await database.getUserIdFromAuth(authId);
+                const userObject = await database.getUserFromUserId(userId);
+                setCurrentUser(userObject);
+            }
+            await fetchAndSetUser();
+        }
+        getUser();
+    }, []);
+
     useFocusEffect(
         useCallback(() => {
             setInGarageMode(true);
@@ -139,6 +159,10 @@ export default function GarageScreen() {
         />
     );
 
+    if (loading || currentUser == null) {
+        <SplashScreen />;
+    }
+
     return (
         <>
             {/* List of cars */}
@@ -169,7 +193,7 @@ export default function GarageScreen() {
                             >
                                 <View style={styles.loadingDialog}>
                                     <Text style={styles.heading}>
-                                        {`Hi ${currentUser.nickname}!\n\nOpening Your Garage`}
+                                        {i18next.t("screens.garage.greeting2")}
                                     </Text>
                                 </View>
                             </ImageBackground>
@@ -186,11 +210,10 @@ export default function GarageScreen() {
                             <TouchableWithoutFeedback>
                                 <View style={styles.dialog}>
                                     <Text style={styles.heading}>
-                                        Managing your Garage
+                                        {t("screens.garage.infoTitle")}
                                     </Text>
                                     <Text style={styles.dialogText}>
-                                        To remove a car from your garage, simply
-                                        tap the car you want to remove.
+                                        {t("screens.garage.infoText")}
                                     </Text>
                                 </View>
                             </TouchableWithoutFeedback>
