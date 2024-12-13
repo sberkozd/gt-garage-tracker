@@ -15,6 +15,7 @@ import {
 
 // Third party imports
 import { signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
@@ -30,6 +31,7 @@ import styles from "./styles";
 import { currentLngKey, supportedLanguages } from "../../i18n/i18n";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
+import * as database from "../../database";
 
 /*
 The UI styling and structure of this page is largely based on: https://withfra.me/components/settings
@@ -37,7 +39,14 @@ For the email Linking, the Linking API is used: https://reactnative.dev/docs/0.7
 */
 export default function SettingsScreen() {
     const [showModal, setShowModal] = useState(false);
-    const { currentUser, setCurrentUser, setIsAuthenticated, loading, setLoading, setAuthId } = useContext(AuthContext);
+    const {
+        currentUser,
+        setCurrentUser,
+        setIsAuthenticated,
+        loading,
+        setLoading,
+        setAuthId,
+    } = useContext(AuthContext);
     const { t, i18n } = useTranslation();
     const [languages] = useState(getLanguagesList());
     const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
@@ -59,19 +68,18 @@ export default function SettingsScreen() {
     }, []);
 
     const onLanguageChange = (value) => {
-        setSelectedLanguage(value); 
+        setSelectedLanguage(value);
     };
 
     const handleConfirmLanguage = async () => {
         try {
             await AsyncStorage.setItem(currentLngKey, selectedLanguage);
-            i18n.changeLanguage(selectedLanguage); 
-            setShowModal(false); 
+            i18n.changeLanguage(selectedLanguage);
+            setShowModal(false);
         } catch (error) {
             console.log("Error saving language selection:", error);
         }
     };
-
 
     const openEmailApp = (emailPurpose) => {
         let recipients = "";
@@ -82,7 +90,9 @@ export default function SettingsScreen() {
         if (emailPurpose === "contact") {
             recipients = ["developer1@a.com", "developer2@a.com"];
             subject = i18next.t("screens.settings.emailText.subjectGeneral");
-            body = i18next.t("screens.settings.emailText.bodyGeneral", {nickname: currentUser.nickname});
+            body = i18next.t("screens.settings.emailText.bodyGeneral", {
+                nickname: currentUser.nickname,
+            });
 
             url = `mailto:${recipients.join(",")}?subject=${encodeURIComponent(
                 subject
@@ -90,7 +100,9 @@ export default function SettingsScreen() {
         } else if (emailPurpose === "bug") {
             recipients = ["developer1@a.com", "developer2@a.com"];
             subject = i18next.t("screens.settings.emailText.subjectBug");
-            body = i18next.t("screens.settings.emailText.bodyBug", {nickname: currentUser.nickname});
+            body = i18next.t("screens.settings.emailText.bodyBug", {
+                nickname: currentUser.nickname,
+            });
 
             url = `mailto:${recipients.join(",")}?subject=${encodeURIComponent(
                 subject
@@ -121,17 +133,29 @@ export default function SettingsScreen() {
     /* Handlers */
 
     const handleLogout = () => {
-        signOut(auth)
-            .then(() => {
-                //resetting states
-                setIsAuthenticated(false);
-                setAuthId(null);
-                setCurrentUser(null);
-                setLoading(false);
-            })
-            .catch(() => {
-                console.log("Error signing out. Please try again.");
-            });
+        Alert.alert("Logout?", "Are you sure you want to log out?", [
+            {
+                text: "Cancel",
+                style: "cancel",
+            },
+            {
+                text: "Logout",
+                onPress: () => {
+                    signOut(auth)
+                        .then(() => {
+                            // Resetting states
+                            setIsAuthenticated(false);
+                            setAuthId(null);
+                            setCurrentUser(null);
+                            setLoading(false);
+                            console.log("Successfully signed out.");
+                        })
+                        .catch((error) => {
+                            console.log("Error signing out:", error.message);
+                        });
+                },
+            },
+        ]);
     };
 
     const handleShowModal = () => {
@@ -255,33 +279,6 @@ export default function SettingsScreen() {
                     </View>
 
                     <View style={styles.buttonSpacer} />
-
-                    <View style={styles.sectionBody}>
-                        <View
-                            style={[
-                                styles.rowWrapper,
-                                styles.rowFirst,
-                                styles.rowLast,
-                                { alignItems: "center" },
-                            ]}
-                        >
-                            <TouchableOpacity
-                                onPress={() => {
-                                    // handle onPress
-                                }}
-                                style={styles.row}
-                            >
-                                <Text
-                                    style={[
-                                        styles.rowLabel,
-                                        styles.rowLabelLogout,
-                                    ]}
-                                >
-                                    {i18next.t("screens.settings.delete")}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                 </View>
                 <Text style={styles.contentFooter}>
                     {i18next.t("screens.settings.footer")}

@@ -5,7 +5,6 @@ The Firebase write functions
 import {
     addDoc,
     collection,
-    deleteDoc,
     doc,
     updateDoc,
     arrayUnion,
@@ -59,9 +58,7 @@ export async function removeCarFromGarage(userId, carId) {
             carsInGarage: arrayRemove(carId),
         });
 
-        console.log(
-            `Car ${carId} removed from user ${userId}'s garage.`
-        );
+        console.log(`Car ${carId} removed from user ${userId}'s garage.`);
         return true;
     } catch (error) {
         console.log("Error removing car from garage:", error.message);
