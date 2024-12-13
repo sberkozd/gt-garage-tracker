@@ -27,21 +27,6 @@ export default function GarageSummaryScreen() {
 
     /* Side effects */
     useEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <TouchableOpacity
-                    onPress={handleLogout}
-                    style={{ marginLeft: 15 }}
-                >
-                    <MaterialCommunityIcons
-                        name="logout"
-                        size={30}
-                        color="#000000"
-                    />
-                </TouchableOpacity>
-            ),
-        });
-
         const fetchTotalAvailableCars = async () => {
             try {
                 const cars = await getAllCarsFromDB();
@@ -72,19 +57,6 @@ export default function GarageSummaryScreen() {
             setLimitedStockCars(limitedStockCount);
         }
     }, [garageCars]);
-
-    /* Handlers */
-    const handleLogout = () => {
-        signOut(auth)
-            .then(() => {
-                //resetting states
-                setIsAuthenticated(false);
-                setAuthId(null);
-            })
-            .catch(() => {
-                showErrorToast("Error signing out. Please try again.");
-            });
-    };
 
     const progress = totalAvailableCars > 0 ? garageCars.length / totalAvailableCars : 0;
 

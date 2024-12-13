@@ -42,11 +42,20 @@ export default function App() {
     const [loading, setLoading] = useState(true);
     const [loadingTranslations, setLoadingTranslations] = useState(true);
     const [loadingFonts, setLoadingFonts] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
 
     /* Side effects */
 
+    // Ensures that loading is only considered when all neccessary components have loaded.
+    useEffect(() => {
+        if (!loadingFonts && !loadingData && !loadingTranslations) {
+            setLoading(false);
+        }
+    }, [loadingTranslations, loadingFonts, loadingData, loading]);
+
     // Loading fonts
     useEffect(() => {
+
         const loadFonts = async () => {
             try {
                 await Font.loadAsync({
@@ -92,9 +101,9 @@ export default function App() {
                 setIsAuthenticated(false);
                 setCurrentUser(null);
                 auth.signOut();
+                setLoading(false);
             }
         });
-
         return unsubscribe;
     }, []);
 
@@ -128,7 +137,7 @@ export default function App() {
                     const initialGarageCars =
                         await database.getGarageCarsFromDB(userId);
                     setGarageCars(initialGarageCars);
-                    setLoading(false);
+                    setLoadingData(false);
                 } catch (error) {
                     console.log(
                         "Error when trying to read from the db:",
@@ -140,7 +149,7 @@ export default function App() {
         }
     }, [authId]);
 
-    if (loading || loadingTranslations) {
+    if (loading) {
         return <SplashScreen></SplashScreen>;
     }
 
