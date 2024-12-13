@@ -118,7 +118,7 @@ export default function CarFilterDialog({
                 style={styles.resetButton}
                 onPress={resetFilters}
               >
-                <Text style={styles.buttonText}>{i18next.t("components.filter.resetFilters")}</Text>
+                <Text style={styles.buttonText}>{i18next.t("components.filter.reset")}</Text>
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>

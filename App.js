@@ -55,7 +55,6 @@ export default function App() {
 
     // Loading fonts
     useEffect(() => {
-
         const loadFonts = async () => {
             try {
                 await Font.loadAsync({
@@ -198,6 +197,7 @@ export default function App() {
                                                 size={30}
                                             />
                                         ),
+                                        title: i18next.t("common.nav.cars"),
                                         tabBarLabel:
                                             i18next.t("common.nav.cars"),
                                     }}
@@ -213,6 +213,7 @@ export default function App() {
                                                 size={30}
                                             />
                                         ),
+                                        title: i18next.t("common.nav.garage"),
                                         tabBarLabel:
                                             i18next.t("common.nav.garage"),
                                     }}
@@ -227,6 +228,9 @@ export default function App() {
                                                 color={color}
                                                 size={30}
                                             />
+                                        ),
+                                        title: i18next.t(
+                                            "common.nav.GarageSummary"
                                         ),
                                         tabBarLabel: i18next.t(
                                             "common.nav.GarageSummary"
@@ -244,6 +248,7 @@ export default function App() {
                                                 size={30}
                                             />
                                         ),
+                                        title: i18next.t("common.nav.settings"),
                                         tabBarLabel: i18next.t(
                                             "common.nav.settings"
                                         ),

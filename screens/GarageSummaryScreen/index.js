@@ -66,7 +66,7 @@ export default function GarageSummaryScreen() {
         if (progress >= 0.5) return { color: '#FFD700', text: i18next.t("screens.garageSummary.gold") };
         if (progress >= 0.3) return { color: '#C0C0C0', text: i18next.t("screens.garageSummary.silver") };
         if (progress >= 0.1) return { color: '#CD7F32', text: i18next.t("screens.garageSummary.bronze") }; 
-        return { color: 'gray', text: i18next.t("screens.garageSummary.") };
+        return { color: 'gray', text: i18next.t("screens.garageSummary.rookie") };
     };
 
     const { color, text } = getProgressColor(progress);
