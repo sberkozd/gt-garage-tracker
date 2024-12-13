@@ -37,7 +37,7 @@ For the email Linking, the Linking API is used: https://reactnative.dev/docs/0.7
 */
 export default function SettingsScreen() {
     const [showModal, setShowModal] = useState(false);
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, setCurrentUser, setIsAuthenticated, loading, setLoading, setAuthId } = useContext(AuthContext);
     const { t, i18n } = useTranslation();
     const [languages] = useState(getLanguagesList());
     const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
@@ -119,6 +119,21 @@ export default function SettingsScreen() {
     };
 
     /* Handlers */
+
+    const handleLogout = () => {
+        signOut(auth)
+            .then(() => {
+                //resetting states
+                setIsAuthenticated(false);
+                setAuthId(null);
+                setCurrentUser(null);
+                setLoading(false);
+            })
+            .catch(() => {
+                console.log("Error signing out. Please try again.");
+            });
+    };
+
     const handleShowModal = () => {
         setShowModal(true);
     };
@@ -224,9 +239,7 @@ export default function SettingsScreen() {
                             ]}
                         >
                             <TouchableOpacity
-                                onPress={() => {
-                                    // handle onPress
-                                }}
+                                onPress={handleLogout}
                                 style={styles.row}
                             >
                                 <Text
