@@ -4,7 +4,7 @@
         "nav": {
             "cars": "Araçlar",
             "garage": "Garaj",
-            "GarageSummary": "Garajim",
+            "GarageSummary": "Garajım",
             "settings": "Ayarlar"
         },
 
@@ -66,6 +66,7 @@
             "bronze": "Bronz",
             "rookie": "Acemi",
             "level": "Koleksiyoncu Seviyesi {{text}}",
+            "collectedCars": "Toplanılan Araçlar: ",
             "mostExpensive": "En pahalı araç",
             "credit": "Kredi",
             "totalValue": "Toplam Garaj Değeri: {{garageValue}} Kredi",

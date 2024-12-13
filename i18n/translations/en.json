@@ -68,6 +68,7 @@
             "level": "Collector Level: {{text}}",
             "mostExpensive": "Most Expensive Car",
             "credit": "Credit",
+            "collectedCars": "Collected Cars: ",
             "totalValue": "Total Garage Value: {{garageValue}} Credits",
             "limitedCarsOwned": "Limited Stock Cars Owned: {{limitedOwned}}"
         },

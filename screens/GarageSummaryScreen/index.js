@@ -102,7 +102,7 @@ export default function GarageSummaryScreen() {
     return (
         <View style={styles.container}>
             <Text style={[styles.boldText, styles.headerText]}>
-                Collected Cars: {garageCars.length} / {totalAvailableCars}
+            {i18next.t("screens.garageSummary.collectedCars")} {garageCars.length} / {totalAvailableCars}
             </Text>
             <Progress.Bar
                 progress={progress}
