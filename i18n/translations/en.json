@@ -123,7 +123,8 @@
         "logOutConfirm": "Are you sure you wish to log out?",
         "nickname": "Nickname",
         "enterGarage": "Enter Garage",
-        "signUp": "Sign Up"
+        "signUp": "Sign Up",
+        "close": "Close"
 
         
     },

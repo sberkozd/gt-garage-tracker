@@ -27,7 +27,11 @@
     "screens": {
         "cars": {
             "title": "Araçlar",
-            "noCars": "Araç bulunamadı."
+            "noCars": "Araç bulunamadı.",
+            "remove": "Aracı kaldır?",
+            "removeMsg": "Aracınız {{year}} {{brand}} {{model}} 'ı garajınızdan kaldırmak istediğinize emin misiniz?",
+            "add": "Aracı ekle?",
+            "addMsg": "{{year}} {{brand}} {{model}} 'ı garajınıza eklemek istediğinize emin misiniz?"
         },
 
         "carDetails": {
@@ -116,6 +120,9 @@
         "sendPasswordReset": "Şifre sıfırlama e-postası gönder",
         "passwordResetSuccess": "Şifre sıfırlama e-postası başarıyla gönderildi.",
 
+        "enterGarage": "Garajınıza girin",
+        "signUp": "Kayıt ol",
+        "close": "Kapat",
         "logOut": "Çıkış Yap",
         "logOutConfirm": "Çıkış yapmak istediğinize emin misiniz?"
     },
