@@ -113,8 +113,8 @@
         "login": "Login",
         "forgotPassword": "Forgot Password",
 
-        "success": "Success {{icon}}",
-        "error": "Error {{icon}}",
+        "success": "Success",
+        "error": "Error",
 
         "sendPasswordReset": "Reset Password",
         "passwordResetSuccess": "Password reset email sent!",

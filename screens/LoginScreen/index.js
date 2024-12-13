@@ -225,7 +225,7 @@ export default function LoginScreen({ setCredentials }) {
     const showSuccessToast = (msg) => {
         Toast.show({
             type: "success",
-            text1: `${i18next.t("loginScreen.success", { icon: "✅" })}`,
+            text1: `${i18next.t("loginScreen.success")}`,
             text2: msg,
             topOffset: 60,
         });
@@ -234,7 +234,7 @@ export default function LoginScreen({ setCredentials }) {
     const showErrorToast = (errMsg) => {
         Toast.show({
             type: "error",
-            text1: `${i18next.t("loginScreen.error", { icon: "🛑" })}`,
+            text1: `${i18next.t("loginScreen.error")}`,
             text2: errMsg,
             visibilityTime: 2200,
             topOffset: 60,

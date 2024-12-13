@@ -54,7 +54,7 @@ export default function CarsStackNavigator() {
           options={{
             headerTitle: currentCar
               ? `${currentCar.brand} ${currentCar.model} '${currentCar.year}`
-              : "Car Details",
+              : i18next.t("screens.carDetails.infoTitle"),
           }}
         />
       </CarsStack.Navigator>
