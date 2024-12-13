@@ -5,13 +5,13 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 // Third-party imports
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Toast from "react-native-toast-message";
 
 // In-project imports
 import styles from "./styles";
 import { CarContext } from "../../context/CarContext";
 import { AuthContext } from "../../context/AuthContext";
 import * as database from "../../database";
+import i18next from "i18next";
 
 export default function Car({
     id,
@@ -67,8 +67,12 @@ export default function Car({
 
     const handleRemoveCarFromGarage = async () => {
         Alert.alert(
-            "Remove Car?",
-            `Are you sure you want to remove your ${year} ${brand} ${model} from your garage?`,
+            `${i18next.t("screens.cars.remove")}`,
+            `${i18next.t("screens.cars.removeMsg", {
+                year: year,
+                brand: brand,
+                model: model,
+            })}`,
             [
                 {
                     text: "Cancel",
@@ -92,14 +96,13 @@ export default function Car({
                                 );
                                 setGarageCars(updatedGarageCars);
                                 setLocalCarInGarage(false);
-                                showSuccessToast("Car removed from garage.");
                             } else {
-                                showErrorToast(
+                                console.log(
                                     "Failed to remove car from garage. Please try again."
                                 );
                             }
                         } catch (error) {
-                            showErrorToast(
+                            console.log(
                                 "Failed to remove car from garage. Please try again."
                             );
                         }
@@ -109,27 +112,6 @@ export default function Car({
         );
     };
 
-    /* Toast logic */
-    const showSuccessToast = (msg) => {
-        Toast.show({
-            type: "success",
-            text1: "Success",
-            text2: msg,
-            visibilityTime: 2200,
-            topOffset: 60,
-        });
-    };
-
-    const showErrorToast = (errMsg) => {
-        Toast.show({
-            type: "error",
-            text1: "Error",
-            text2: errMsg,
-            visibilityTime: 2200,
-            topOffset: 60,
-        });
-    };
-
     return (
         <Pressable style={styles.card} onPress={handleCarPress}>
             <View>
@@ -137,7 +119,11 @@ export default function Car({
                 <View style={styles.iconContainer}>
                     {isLimitedStock && (
                         <View style={styles.limitedStockContainer}>
-                            <MaterialCommunityIcons name="alert" size={20} color="red" />
+                            <MaterialCommunityIcons
+                                name="alert"
+                                size={20}
+                                color="red"
+                            />
                         </View>
                     )}
                     {localCarInGarage && (

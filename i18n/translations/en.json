@@ -27,7 +27,11 @@
     "screens": {
         "cars": {
             "title": "Available Cars",
-            "noCars": "No cars available."
+            "noCars": "No cars available.",
+            "remove": "Remove Car?",
+            "removeMsg": "Are you sure you want to remove your {{year}} {{brand}} {{model}} from your garage?",
+            "add": "Add Car?",
+            "addMsg": "Are you sure you want to add the {{year}} {{brand}} {{model}} to your garage?"
         },
 
         "carDetails": {
@@ -107,7 +111,7 @@
         "password": "Password",
 
         "login": "Login",
-        "forgotPassword": "Forgot password",
+        "forgotPassword": "Forgot Password",
 
         "success": "Success {{icon}}",
         "error": "Error {{icon}}",
@@ -116,7 +120,12 @@
         "passwordResetSuccess": "Password reset email sent!",
 
         "logOut": "Log Out",
-        "logOutConfirm": "Are you sure you wish to log out?"
+        "logOutConfirm": "Are you sure you wish to log out?",
+        "nickname": "Nickname",
+        "enterGarage": "Enter Garage",
+        "signUp": "Sign Up"
+
+        
     },
 
     "errors": {
@@ -129,8 +138,17 @@
             "signOut": "Error signing out.",
             "invalidEmail": "Please enter a valid email.",
             "noPassword": "Password is required.",
+            "nickname": "Nickname is required",
             "invalidCredentials": "Invalid email or password.",
             "userDisabled": "Account disabled. Please contact your administrator."
+        },
+
+        "email": {
+
+            "unsupportedApp": "An error occured, please email developer1@a.com and/or developer2@a.com directly.",
+            "inUse": "The Email you entered is already in use.",
+            "weakPassword": "Please enter a stronger password."
+
         }
     }
 }

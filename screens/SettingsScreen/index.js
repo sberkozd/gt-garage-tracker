@@ -15,15 +15,12 @@ import {
 
 // Third party imports
 import { signOut } from "firebase/auth";
-import { getAuth } from "firebase/auth";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 
 // Project imports
 import { AuthContext } from "../../context/AuthContext";
-import { CarContext } from "../../context/CarContext";
-import { getAllCarsFromDB } from "../../database/read";
 import { auth } from "../../database/config";
 import styles from "./styles";
 
@@ -31,7 +28,6 @@ import styles from "./styles";
 import { currentLngKey, supportedLanguages } from "../../i18n/i18n";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
-import * as database from "../../database";
 
 /*
 The UI styling and structure of this page is largely based on: https://withfra.me/components/settings
@@ -113,9 +109,8 @@ export default function SettingsScreen() {
             .then((supported) => {
                 if (!supported) {
                     Alert.alert(
-                        "Email Error",
-                        `You have no supported email app installed, please email developer1@a.com
-                        and/or developer2@a.com directly.`
+                        `${i18next.t("errors.error")}`,
+                        `${i18next.t("errors.email.unsupportedApp")}`
                     );
                 } else {
                     return Linking.openURL(url);
@@ -123,9 +118,8 @@ export default function SettingsScreen() {
             })
             .catch(() => {
                 Alert.alert(
-                    "Email Error",
-                    `An error occured, please email developer1@a.com
-                    and/or developer2@a.com directly.`
+                    `${i18next.t("errors.error")}`,
+                    `${i18next.t("errors.email.unsupportedApp")}`
                 );
             });
     };
@@ -133,13 +127,13 @@ export default function SettingsScreen() {
     /* Handlers */
 
     const handleLogout = () => {
-        Alert.alert("Logout?", "Are you sure you want to log out?", [
+        Alert.alert(`${i18next.t("loginScreen.logOut")}`,`${i18next.t("loginScreen.logOutConfirm")}`, [
             {
-                text: "Cancel",
+                text: `${i18next.t("common.cancel")}`,
                 style: "cancel",
             },
             {
-                text: "Logout",
+                text: `${i18next.t("loginScreen.logOut")}`,
                 onPress: () => {
                     signOut(auth)
                         .then(() => {

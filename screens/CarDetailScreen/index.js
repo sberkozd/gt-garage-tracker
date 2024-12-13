@@ -15,7 +15,6 @@ import {
 // Third-party imports
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { DataTable } from "react-native-paper";
-import Toast from "react-native-toast-message";
 import FlipCard from "react-native-flip-card";
 
 // In-project imports
@@ -84,8 +83,12 @@ export default function CarDetailScreen() {
 
     const handleAddCarToGarage = async () => {
         Alert.alert(
-            "Add Car?",
-            `Are you sure you want to add the ${currentCar.year} ${currentCar.brand} ${currentCar.model} to your garage?`,
+            `${i18next.t("screens.cars.add")}`,
+            `${i18next.t("screens.cars.addMsg", {
+                year: currentCar.year,
+                brand: currentCar.brand,
+                model: currentCar.model,
+            })}`,
             [
                 {
                     text: "Cancel",
@@ -110,14 +113,14 @@ export default function CarDetailScreen() {
                                 ];
                                 setGarageCars(updatedGarageCars);
                                 setCarInGarage(true);
-                                showSuccessToast("Car added to garage.");
+                                console.log("Car added to garage.");
                             } else {
-                                showErrorToast(
+                                console.log(
                                     "Failed to add car to garage. Please try again."
                                 );
                             }
                         } catch (error) {
-                            showErrorToast(
+                            console.log(
                                 "Failed to add car to garage. Please try again."
                             );
                         }
@@ -125,27 +128,6 @@ export default function CarDetailScreen() {
                 },
             ]
         );
-    };
-
-    /* Toast logic */
-    const showSuccessToast = (msg) => {
-        Toast.show({
-            type: "success",
-            text1: "Success",
-            text2: msg,
-            visibilityTime: 2200,
-            topOffset: 60,
-        });
-    };
-
-    const showErrorToast = (errMsg) => {
-        Toast.show({
-            type: "error",
-            text1: "Error",
-            text2: errMsg,
-            visibilityTime: 2200,
-            topOffset: 60,
-        });
     };
 
     return (

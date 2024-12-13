@@ -24,6 +24,7 @@ import styles from "./styles";
 import { AuthContext } from "../../context/AuthContext";
 import * as database from "../../database";
 import InputMsgBox from "../../components/InputMsgBox";
+import i18next from "i18next";
 
 /*
 A component that uses Firebase Auth to allow users to sign up,
@@ -99,7 +100,7 @@ export default function LoginScreen({ setCredentials }) {
 
         if (emailRegexTest == false) {
             setEmailIsValid(false);
-            setEmailErrTxt("Please enter a valid email");
+            setEmailErrTxt(i18next.t("errors.login.invalidEmail"));
             setPasswordResetBtnDisabled(true);
         } else {
             setEmailIsValid(true);
@@ -114,7 +115,7 @@ export default function LoginScreen({ setCredentials }) {
 
         if (value.length === 0) {
             setPwdIsValid(false);
-            setPwdErrTxt("Please enter a password");
+            setPwdErrTxt(i18next.t("errors.login.noPassword"));
         } else {
             setPwdIsValid(true);
             setPwdErrTxt("");
@@ -127,7 +128,7 @@ export default function LoginScreen({ setCredentials }) {
 
         if (value.length === 0) {
             setNicknameIsValid(false);
-            setNicknameErrTxt("Please enter a nickname");
+            setNicknameErrTxt(i18next.t("errors.login.nickname"));
         } else {
             setNicknameIsValid(true);
             setNicknameErrTxt("");
@@ -143,10 +144,10 @@ export default function LoginScreen({ setCredentials }) {
                 const user = userCredential.user;
                 setAuthId(user.uid);
                 setIsAuthenticated(true);
-                showSuccessToast("Login successful");
+                showSuccessToast(i18next.t("loginScreen.success"));
             })
             .catch(() => {
-                showErrorToast("Incorrect username or password");
+                showErrorToast(i18next.t("errors.login.invalidCredentials"));
                 handlePwdChange("");
             });
     };
@@ -174,13 +175,11 @@ export default function LoginScreen({ setCredentials }) {
             })
             .catch((error) => {
                 if (error.code === "auth/email-already-in-use") {
-                    showErrorToast("The Email you entered is already in use.");
+                    showErrorToast(i18next.t("errors.email.inUse"));
                 } else if (error.code === "auth/weak-password") {
-                    showErrorToast("Please enter a stronger password.");
+                    showErrorToast(i18next.t("errors.email.weakPassword"));
                 } else {
-                    showErrorToast(
-                        "An error occured while signing up, please try again."
-                    );
+                    showErrorToast(i18next.t("errors.generic"));
                 }
                 handlePwdChange("");
             });
@@ -194,12 +193,12 @@ export default function LoginScreen({ setCredentials }) {
     const handleSendPasswordResetLink = () => {
         sendPasswordResetEmail(auth, email)
             .then(() => {
-                showSuccessToast("Password reset via email requested");
+                showSuccessToast(
+                    `${i18next.t("loginScreen.passwordResetSuccess")}`
+                );
             })
             .catch(() => {
-                showErrorToast(
-                    "There was an error, sending the link, please try again"
-                );
+                showErrorToast(`${i18next.t("errors.generic")}`);
             });
     };
 
@@ -227,7 +226,7 @@ export default function LoginScreen({ setCredentials }) {
     const showSuccessToast = (msg) => {
         Toast.show({
             type: "success",
-            text1: "Success ✅",
+            text1: `${i18next.t("loginScreen.success", { icon: "✅" })}`,
             text2: msg,
             topOffset: 60,
         });
@@ -236,7 +235,7 @@ export default function LoginScreen({ setCredentials }) {
     const showErrorToast = (errMsg) => {
         Toast.show({
             type: "error",
-            text1: "Error 🛑",
+            text1: `${i18next.t("loginScreen.error", { icon: "🛑" })}`,
             text2: errMsg,
             visibilityTime: 2200,
             topOffset: 60,
@@ -255,7 +254,7 @@ export default function LoginScreen({ setCredentials }) {
                 >
                     <TextInput
                         style={styles.textInputContainer}
-                        placeholder="Email Address"
+                        placeholder={i18next.t("loginScreen.email")}
                         onChangeText={handleEmailChange}
                         keyboardType={"email"}
                         autoCapitalize="none"
@@ -265,7 +264,7 @@ export default function LoginScreen({ setCredentials }) {
 
                     <TextInput
                         style={styles.textInputContainer}
-                        placeholder="Password"
+                        placeholder={i18next.t("loginScreen.password")}
                         onChangeText={handlePwdChange}
                         secureTextEntry={true}
                         value={pwd}
@@ -290,7 +289,7 @@ export default function LoginScreen({ setCredentials }) {
                             disabled={loginBtnDisabled}
                         >
                             <Text style={styles.modalButtonText}>
-                                Enter Garage
+                                {i18next.t("loginScreen.enterGarage")}
                             </Text>
                         </Pressable>
                     </ImageBackground>
@@ -300,7 +299,7 @@ export default function LoginScreen({ setCredentials }) {
                         onPress={handleForgotPasswordPress}
                     >
                         <Text style={styles.modalButtonText}>
-                            Forgot Password?
+                            {i18next.t("loginScreen.forgotPassword")}
                         </Text>
                     </Pressable>
 
@@ -308,14 +307,10 @@ export default function LoginScreen({ setCredentials }) {
                         style={[styles.modalButton, styles.signupButton]}
                         onPress={handleSignUpPress}
                     >
-                        <Text style={styles.modalButtonText}>Sign up</Text>
-                    </Pressable>
-
-                    <View style={styles.footer}>
-                        <Text style={styles.footerText}>
-                            Aggrey Nhiwatiwa + Berk Ozdemir © Copyright 2024
+                        <Text style={styles.modalButtonText}>
+                            {i18next.t("loginScreen.signUp")}`
                         </Text>
-                    </View>
+                    </Pressable>
 
                     <Modal
                         animationType="slide"
@@ -325,7 +320,7 @@ export default function LoginScreen({ setCredentials }) {
                         <View style={[styles.modalView, styles.modalViewSmall]}>
                             <TextInput
                                 style={styles.textInputContainer}
-                                placeholder="Email Address"
+                                placeholder={i18next.t("loginScreen.email")}
                                 onChangeText={handleEmailChange}
                                 value={email}
                                 keyboardType={"email"}
@@ -345,7 +340,7 @@ export default function LoginScreen({ setCredentials }) {
                                 disabled={passwordResetBtnDisabled}
                             >
                                 <Text style={styles.modalButtonText}>
-                                    Request Reset
+                                    {i18next.t("loginScreen.sendPasswordReset")}
                                 </Text>
                             </Pressable>
 
@@ -354,7 +349,7 @@ export default function LoginScreen({ setCredentials }) {
                                 onPress={handleModalToggle}
                             >
                                 <Text style={styles.modalButtonText}>
-                                    Close
+                                    {i18next.t("common.close")}
                                 </Text>
                             </Pressable>
                         </View>
@@ -370,7 +365,7 @@ export default function LoginScreen({ setCredentials }) {
                         <View style={styles.modalView}>
                             <TextInput
                                 style={styles.textInputContainer}
-                                placeholder="Nickname"
+                                placeholder={i18next.t("loginScreen.nickname")}
                                 onChangeText={handleNicknameChange}
                                 value={nickname}
                             />
@@ -379,7 +374,7 @@ export default function LoginScreen({ setCredentials }) {
 
                             <TextInput
                                 style={styles.textInputContainer}
-                                placeholder="Email Address"
+                                placeholder={i18next.t("loginScreen.email")}
                                 onChangeText={handleEmailChange}
                                 value={email}
                                 keyboardType={"email"}
@@ -390,7 +385,7 @@ export default function LoginScreen({ setCredentials }) {
 
                             <TextInput
                                 style={styles.textInputContainer}
-                                placeholder="Password"
+                                placeholder={i18next.t("loginScreen.password")}
                                 onChangeText={handlePwdChange}
                                 secureTextEntry={true}
                                 value={pwd}
@@ -408,7 +403,7 @@ export default function LoginScreen({ setCredentials }) {
                                 disabled={signUpBtnDisabled}
                             >
                                 <Text style={styles.modalButtonText}>
-                                    Sign Up
+                                    {i18next.t("loginScreen.signUp")}
                                 </Text>
                             </Pressable>
 
@@ -417,7 +412,7 @@ export default function LoginScreen({ setCredentials }) {
                                 onPress={handleSignUpModalToggle}
                             >
                                 <Text style={styles.modalButtonText}>
-                                    Close
+                                    {i18next.t("loginScreen.close")}
                                 </Text>
                             </Pressable>
                         </View>

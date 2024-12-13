@@ -23,6 +23,7 @@ import * as Font from "expo-font";
 // Localisation
 import i18next from "i18next";
 import { initI18next } from "./i18n/i18n";
+import Toast from "react-native-toast-message";
 
 const Tab = createBottomTabNavigator();
 
@@ -258,6 +259,7 @@ export default function App() {
                         ) : (
                             <LoginScreen />
                         )}
+                        <Toast />
                     </NavigationContainer>
                 </CarContext.Provider>
             </AuthContext.Provider>
