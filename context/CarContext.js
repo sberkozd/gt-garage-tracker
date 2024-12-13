@@ -1,9 +1,5 @@
 import { createContext } from "react";
 
-/*
-Creating the CarsContext
-*/
-
 export const CarContext = createContext({
     cars: [],
     setCars: () => {},

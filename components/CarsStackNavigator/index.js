@@ -4,15 +4,13 @@ import React, { useState, useContext } from "react";
 // Third-party imports
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
+import i18next from "i18next";
 
 // In-project imports
 import { CarContext } from "../../context/CarContext";
 import CarsScreen from "../../screens/CarsScreen";
 import CarDetailScreen from "../../screens/CarDetailScreen";
 import CarFilterDialog from "../dialog/CarFilterDialog";
-
-// Language
-import i18next from "i18next";
 
 const CarsStack = createStackNavigator();
 

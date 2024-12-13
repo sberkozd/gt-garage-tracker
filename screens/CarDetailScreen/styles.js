@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
         fontWeight: "600",
     },
-    addButton :{
+    addButton: {
         backgroundColor: "#1E3F5A",
         margin: 10,
         width: 200,
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
     },
     overlay: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
     },
     dialog: {
         width: 300,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         alignItems: "center",
         padding: 20,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderRadius: 10,
     },
     heading: {

@@ -1,6 +1,5 @@
 // React imports
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
     Alert,
     Modal,
@@ -23,6 +22,7 @@ import { Picker } from "@react-native-picker/picker";
 import { AuthContext } from "../../context/AuthContext";
 import { auth } from "../../database/config";
 import styles from "./styles";
+import SplashScreen from "../../components/SplashScreen";
 
 //Languages
 import { currentLngKey, supportedLanguages } from "../../i18n/i18n";
@@ -32,6 +32,9 @@ import { useTranslation } from "react-i18next";
 /*
 The UI styling and structure of this page is largely based on: https://withfra.me/components/settings
 For the email Linking, the Linking API is used: https://reactnative.dev/docs/0.70/linking
+
+The settings screen also allows a user to logout of their account, as well as displaying their
+registered email address and nickname
 */
 export default function SettingsScreen() {
     const [showModal, setShowModal] = useState(false);
@@ -127,33 +130,36 @@ export default function SettingsScreen() {
     /* Handlers */
 
     const handleLogout = () => {
-        Alert.alert(`${i18next.t("loginScreen.logOut")}`,`${i18next.t("loginScreen.logOutConfirm")}`, [
-            {
-                text: `${i18next.t("common.cancel")}`,
-                style: "cancel",
-            },
-            {
-                text: `${i18next.t("loginScreen.logOut")}`,
-                onPress: () => {
-                    signOut(auth)
-                        .then(() => {
-                            // Resetting states
-                            setIsAuthenticated(false);
-                            setAuthId(null);
-                            setCurrentUser(null);
-                            setLoading(false);
-                            console.log("Successfully signed out.");
-                        })
-                        .catch((error) => {
-                            console.log("Error signing out:", error.message);
-                        });
+        Alert.alert(
+            `${i18next.t("loginScreen.logOut")}`,
+            `${i18next.t("loginScreen.logOutConfirm")}`,
+            [
+                {
+                    text: `${i18next.t("common.cancel")}`,
+                    style: "cancel",
                 },
-            },
-        ]);
-    };
-
-    const handleShowModal = () => {
-        setShowModal(true);
+                {
+                    text: `${i18next.t("loginScreen.logOut")}`,
+                    onPress: () => {
+                        signOut(auth)
+                            .then(() => {
+                                // Resetting states
+                                setIsAuthenticated(false);
+                                setAuthId(null);
+                                setCurrentUser(null);
+                                setLoading(false);
+                                console.log("Successfully signed out.");
+                            })
+                            .catch((error) => {
+                                console.log(
+                                    "Error signing out:",
+                                    error.message
+                                );
+                            });
+                    },
+                },
+            ]
+        );
     };
 
     const handleHideModal = () => {
@@ -167,6 +173,10 @@ export default function SettingsScreen() {
     const handleOpenBugEmail = () => {
         openEmailApp("bug");
     };
+
+    if (loading) {
+        return <SplashScreen />;
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>

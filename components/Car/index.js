@@ -5,14 +5,18 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 // Third-party imports
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import i18next from "i18next";
 
 // In-project imports
 import styles from "./styles";
 import { CarContext } from "../../context/CarContext";
 import { AuthContext } from "../../context/AuthContext";
 import * as database from "../../database";
-import i18next from "i18next";
 
+/*
+A component that represents a Car item based off data fetched
+from the db
+*/
 export default function Car({
     id,
     brand,
@@ -34,10 +38,12 @@ export default function Car({
     } = useContext(CarContext);
     const { authId } = useContext(AuthContext);
     const navigation = useNavigation();
-
     const [localCarInGarage, setLocalCarInGarage] = useState(null);
 
     /* Side Effects */
+
+    // Evaluates whether each car is in the users garage
+    // when it is present in a list
     useFocusEffect(
         useCallback(() => {
             setLocalCarInGarage(searchGarage(id));
@@ -75,11 +81,11 @@ export default function Car({
             })}`,
             [
                 {
-                    text: "Cancel",
+                    text: `${i18next.t("common.cancel")}`,
                     style: "cancel",
                 },
                 {
-                    text: "OK",
+                    text: `${i18next.t("common.accept")}`,
                     onPress: async () => {
                         try {
                             const userId = await database.getUserIdFromAuth(

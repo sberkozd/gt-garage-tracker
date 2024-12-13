@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 
-
 /*
 Styling of the Settings screen
 Most of these styles come: https://withfra.me/components/settings
@@ -148,14 +147,14 @@ const styles = StyleSheet.create({
 
     overlay: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
     },
     dialog: {
         width: 300,
         padding: 20,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderRadius: 10,
     },
     title: {
@@ -163,8 +162,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     switchContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         marginBottom: 20,
     },
     switchLabel: {
@@ -181,24 +180,22 @@ const styles = StyleSheet.create({
         width: 250,
     },
     applyButton: {
-        backgroundColor: '#6200EE',
+        backgroundColor: "#6200EE",
         padding: 10,
         borderRadius: 5,
-        alignItems: 'center',
+        alignItems: "center",
         marginBottom: 10,
     },
     resetButton: {
-        backgroundColor: '#B00020',
+        backgroundColor: "#B00020",
         padding: 10,
         borderRadius: 5,
-        alignItems: 'center',
+        alignItems: "center",
     },
     buttonText: {
-        color: 'white',
+        color: "white",
         fontSize: 16,
     },
-
-
 });
 
 export default styles;

@@ -5,6 +5,16 @@ import stringsEN from "./translations/en.json";
 import stringsTR from "./translations/tr.json";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+/*
+Functionality relating to i18n integration.
+The localisation feature was an extra feature we decided to implement for this project.
+As a disclaimer, much of this code in this file was used in mine (Aggrey's) Capstone project.
+However, outside of this file, the implementation was quite different due to the architecture
+of this app. In addition, the second language used for localisation is different.
+
+Feel free to check it out here!: https://github.com/LivioDR/Fanshawe_MAP_Capstone_S1G9
+
+*/
 const languageDetector = {
     type: "languageDetector",
     async: true,

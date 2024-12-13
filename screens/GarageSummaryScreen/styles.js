@@ -3,13 +3,13 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         padding: 20,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: "#f5f5f5",
     },
     boldText: {
-        fontWeight: 'bold',
+        fontWeight: "bold",
         fontSize: 18,
         marginVertical: 10,
     },
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     expensiveCarContainer: {
-        alignItems: 'center',
+        alignItems: "center",
         marginTop: 20,
     },
     carImage: {
@@ -35,20 +35,20 @@ const styles = StyleSheet.create({
     },
     expensiveCarText: {
         fontSize: 18,
-        textAlign: 'center',
+        textAlign: "center",
     },
     totalGarageValueText: {
         marginTop: 20,
     },
     limitedStockContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         marginTop: 10,
     },
     limitedStockText: {
         fontSize: 18,
         lineHeight: 30,
-        marginLeft: 10
+        marginLeft: 10,
     },
 });
 

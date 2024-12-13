@@ -4,15 +4,22 @@ import { FlatList, View, Text } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
 // In-project imports
+import { AuthContext } from "../../context/AuthContext";
 import { CarContext } from "../../context/CarContext";
 import Car from "../../components/Car";
 import styles from "./styles";
+import SplashScreen from "../../components/SplashScreen";
 
 // Languages
 import i18next from "i18next";
 
+/*
+The global list of cars from the db are rendered here, along with
+the filtering functionality.
+*/
 export default function CarsScreen({ filters }) {
     const { cars, setInCarAddMode, setInGarageMode } = useContext(CarContext);
+    const { loading } = useContext(AuthContext);
 
     /* Side effects */
     useFocusEffect(
@@ -52,10 +59,16 @@ export default function CarsScreen({ filters }) {
         />
     );
 
+    if (loading) {
+        return <SplashScreen />;
+    }
+
     if (filteredCars.length === 0) {
         return (
             <View style={styles.noCarsContainer}>
-                <Text style={styles.noCarsText}>{i18next.t("screens.cars.noCars")}</Text>
+                <Text style={styles.noCarsText}>
+                    {i18next.t("screens.cars.noCars")}
+                </Text>
             </View>
         );
     }

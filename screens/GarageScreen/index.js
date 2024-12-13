@@ -21,6 +21,8 @@ import {
 // Third party imports
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/Ionicons";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 // Project imports
 import styles from "./styles";
@@ -28,11 +30,13 @@ import { AuthContext } from "../../context/AuthContext";
 import { CarContext } from "../../context/CarContext";
 import Car from "../../components/Car";
 import CarFilterDialog from "../../components/dialog/CarFilterDialog";
-import i18next from "i18next";
-import { useTranslation } from "react-i18next";
 import SplashScreen from "../../components/SplashScreen";
 import * as database from "../../database";
 
+/*
+Screen which renders the list of cars a user has in their garage
+The user is able to remove cars from this screen also
+*/
 export default function GarageScreen() {
     /* State */
     const { currentUser, setCurrentUser, loading, authId } =
@@ -40,6 +44,7 @@ export default function GarageScreen() {
     const { garageCars, setInCarAddMode, setInGarageMode } =
         useContext(CarContext);
     const navigation = useNavigation();
+    const { t } = useTranslation();
     const [filters, setFilters] = useState({
         limitedStock: false,
         minPp: 0,
@@ -47,14 +52,18 @@ export default function GarageScreen() {
         minCredit: 0,
         maxCredit: 500000,
     });
-
     const [activeModal, setActiveModal] = useState("loading");
-    const { t } = useTranslation();
 
     // Custom slide animation that starts on the centre of the screen (value 0)
     const garageSlideAnimation = useRef(new Animated.Value(0)).current;
 
     /* Side effects */
+    useFocusEffect(
+        useCallback(() => {
+            setInGarageMode(true);
+            setInCarAddMode(false);
+        }, [])
+    );
 
     //In case user hasn't been updated from App.js
     useEffect(() => {
@@ -68,13 +77,6 @@ export default function GarageScreen() {
         }
         getUser();
     }, []);
-
-    useFocusEffect(
-        useCallback(() => {
-            setInGarageMode(true);
-            setInCarAddMode(false);
-        }, [])
-    );
 
     useEffect(() => {
         handleShowLoadingModal();
@@ -160,7 +162,7 @@ export default function GarageScreen() {
     );
 
     if (loading || currentUser == null) {
-        <SplashScreen />;
+        return <SplashScreen />;
     }
 
     return (

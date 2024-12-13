@@ -16,7 +16,6 @@ import {
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
     signInWithEmailAndPassword,
-    signOut,
 } from "firebase/auth";
 
 // Project imports

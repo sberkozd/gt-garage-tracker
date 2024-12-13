@@ -9,6 +9,10 @@ import { Picker } from "@react-native-picker/picker";
 import styles from "./styles";
 import i18next from "i18next";
 
+/*
+A component which presents a Modal which allows a user to filter a list of car objects,
+whether that be the global list or their own personal garage list
+*/
 export default function CarFilterDialog({
     visible,
     onClose,
@@ -28,10 +32,6 @@ export default function CarFilterDialog({
     const handleApply = () => {
       const [minPp, maxPp] = selectedPpRange.split("-").map(Number);
       const [minCredit, maxCredit] = selectedCreditRange.split("-").map(Number);
-  
-      console.log("Applying Filters:");
-      console.log("minPp:", minPp, "maxPp:", maxPp);
-      console.log("minCredit:", minCredit, "maxCredit:", maxCredit);
   
       onApply({
         limitedStock: localLimitedStock,

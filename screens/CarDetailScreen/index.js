@@ -16,14 +16,18 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { DataTable } from "react-native-paper";
 import FlipCard from "react-native-flip-card";
+import i18next from "i18next";
 
 // In-project imports
 import styles from "./styles";
 import { CarContext } from "../../context/CarContext";
 import { AuthContext } from "../../context/AuthContext";
 import * as database from "../../database";
-import i18next from "i18next";
+import SplashScreen from "../../components/SplashScreen";
 
+/*
+A component that gets extra details of a pressed car and also allows it to be added to the garage.
+*/
 export default function CarDetailScreen() {
     /* State */
     const {
@@ -35,7 +39,7 @@ export default function CarDetailScreen() {
         setInCarAddMode,
         setInGarageMode,
     } = useContext(CarContext);
-    const { authId } = useContext(AuthContext);
+    const { authId, loading } = useContext(AuthContext);
     const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
 
@@ -91,11 +95,11 @@ export default function CarDetailScreen() {
             })}`,
             [
                 {
-                    text: "Cancel",
+                    text: `${i18next.t("common.cancel")}`,
                     style: "cancel",
                 },
                 {
-                    text: "OK",
+                    text: `${i18next.t("common.accept")}`,
                     onPress: async () => {
                         try {
                             const userId = await database.getUserIdFromAuth(
@@ -130,6 +134,10 @@ export default function CarDetailScreen() {
         );
     };
 
+    if (loading) {
+        return <SplashScreen />;
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.flipCardContainer}>
@@ -157,7 +165,9 @@ export default function CarDetailScreen() {
                         />
                     </View>
                     <View style={styles.back}>
-                        <Text style={styles.backText}>{currentCar.description}</Text>
+                        <Text style={styles.backText}>
+                            {currentCar.description}
+                        </Text>
                     </View>
                 </FlipCard>
             </View>
@@ -173,14 +183,18 @@ export default function CarDetailScreen() {
                         },
                     ]}
                 >
-                    {currentCar.isLimitedStock ? i18next.t("screens.carDetails.limitedStock") : i18next.t("screens.carDetails.manyStock")}
+                    {currentCar.isLimitedStock
+                        ? i18next.t("screens.carDetails.limitedStock")
+                        : i18next.t("screens.carDetails.manyStock")}
                 </Text>
             </View>
 
             <DataTable>
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.manufacturer")}:</Text>
+                        <Text style={styles.leftText}>
+                            {i18next.t("screens.carDetails.manufacturer")}:
+                        </Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.brand}</Text>
@@ -189,7 +203,9 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.model")}:</Text>
+                        <Text style={styles.leftText}>
+                            {i18next.t("screens.carDetails.model")}:
+                        </Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.model}</Text>
@@ -198,7 +214,9 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.year")}:</Text>
+                        <Text style={styles.leftText}>
+                            {i18next.t("screens.carDetails.year")}:
+                        </Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.year}</Text>
@@ -207,7 +225,9 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.pp")}:</Text>
+                        <Text style={styles.leftText}>
+                            {i18next.t("screens.carDetails.pp")}:
+                        </Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>{currentCar.pp}</Text>
@@ -216,7 +236,9 @@ export default function CarDetailScreen() {
 
                 <DataTable.Row>
                     <DataTable.Cell>
-                        <Text style={styles.leftText}>{i18next.t("screens.carDetails.drivetrain")}:</Text>
+                        <Text style={styles.leftText}>
+                            {i18next.t("screens.carDetails.drivetrain")}:
+                        </Text>
                     </DataTable.Cell>
                     <DataTable.Cell>
                         <Text style={styles.rightText}>
@@ -237,7 +259,9 @@ export default function CarDetailScreen() {
                         carInGarage && styles.disabledButtonText,
                     ]}
                 >
-                    {carInGarage ? i18next.t("screens.carDetails.alreadyInGarage") : i18next.t("screens.carDetails.addToGarage")}
+                    {carInGarage
+                        ? i18next.t("screens.carDetails.alreadyInGarage")
+                        : i18next.t("screens.carDetails.addToGarage")}
                 </Text>
             </Pressable>
 
@@ -246,9 +270,15 @@ export default function CarDetailScreen() {
                     <View style={styles.overlay}>
                         <TouchableWithoutFeedback>
                             <View style={styles.dialog}>
-                                <Text style={styles.heading}>{i18next.t("screens.carDetails.infoTitle")}</Text>
-                                <Text style={styles.dialogText}>{i18next.t("screens.carDetails.infoText1")}</Text>
-                                <Text style={styles.dialogText}>{i18next.t("screens.carDetails.infoText2")}</Text>
+                                <Text style={styles.heading}>
+                                    {i18next.t("screens.carDetails.infoTitle")}
+                                </Text>
+                                <Text style={styles.dialogText}>
+                                    {i18next.t("screens.carDetails.infoText1")}
+                                </Text>
+                                <Text style={styles.dialogText}>
+                                    {i18next.t("screens.carDetails.infoText2")}
+                                </Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>

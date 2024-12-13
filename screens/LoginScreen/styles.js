@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
         bottom: 40,
         zIndex: -2, //Needed so that outer toast shows above footer
     },
-    modal: {
-        // backgroundColor: "#D3D3D3,
-    },
     modalView: {
         backgroundColor: "#000000",
         alignSelf: "stretch",
